@@ -1,0 +1,456 @@
+[
+  {
+    "user_id": "USER0016",
+    "name": "James",
+    "email": "james@example.com",
+    "phone": "+1 2341 23 89",
+    "country": "USA",
+    "location": "Wurzburg",
+    "age": "25",
+    "status": "Working",
+    "profession": "Business",
+    "languages": [
+      "English"
+    ],
+    "preferred_language": "English",
+    "registered_at": "2026-01-15T21:45:43.032322",
+    "assessment_completed": true,
+    "adaptive_answers": [
+      {
+        "question": "Tell me about your hobbies and interests. What do you enjoy doing in your free time?",
+        "answer": "I like sport."
+      },
+      {
+        "question": "Are there any activities, topics, or social situations you definitely want to avoid? This helps us find compatible matches.",
+        "answer": "religion"
+      },
+      {
+        "question": "How often are you available to meet new people? What times work best for you (weekdays/weekends, mornings/evenings)?",
+        "answer": "I would like to meet people on weekends or on weekdays during dinner."
+      },
+      {
+        "question": "Which specific sports do you enjoy most\u2014like basketball, hiking, soccer, or gym workouts?",
+        "answer": "I like team sports like football or basketball."
+      },
+      {
+        "question": "Do you prefer casual hangouts at sports venues/bars, or active meetups? Small groups or larger gatherings?",
+        "answer": "I prefer meetings with small companies in a cafe or restaurant. I also like just walking."
+      },
+      {
+        "question": "What qualities matter most in friends\u2014shared passions, trust, humor, or something else?",
+        "answer": "humor"
+      },
+      {
+        "question": "Any dietary restrictions or activity preferences (like avoiding alcohol/pubs) for your weekend/dinner meetups?",
+        "answer": "avoiding alcohol"
+      }
+    ],
+    "generated_questions": [
+      {
+        "id": "Q4",
+        "question": "Which specific sports do you enjoy most\u2014like basketball, hiking, soccer, or gym workouts?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q5",
+        "question": "Do you prefer casual hangouts at sports venues/bars, or active meetups? Small groups or larger gatherings?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q6",
+        "question": "What qualities matter most in friends\u2014shared passions, trust, humor, or something else?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q7",
+        "question": "Any dietary restrictions or activity preferences (like avoiding alcohol/pubs) for your weekend/dinner meetups?",
+        "type": "open_text"
+      }
+    ],
+    "nlp_profile": {
+      "summary": "",
+      "matching_summary": "",
+      "preferences": [
+        "prefers casual activities: walking, cafe/restaurant meetups",
+        "values humor in friendships",
+        "available for socializing during weekend dinners and weekday dinners",
+        "enjoys team sports (football, basketball)",
+        "likes small group gatherings"
+      ],
+      "constraints": [
+        "Prefers no alcohol at meetups",
+        "Dislikes large gatherings (prefers small groups)",
+        "Avoids discussions about religion"
+      ],
+      "extracted_interests": [],
+      "personality_traits": [],
+      "key_facts": [
+        "Prefers low-key social settings (cafes, restaurants, walks)",
+        "Moderate activity level (team sports + walking)",
+        "Evening availability (dinner times)",
+        "Social style: Small-group oriented",
+        "Lifestyle: Alcohol-free socialization"
+      ]
+    }
+  },
+  {
+    "user_id": "USER0007",
+    "name": "Anna",
+    "email": "anna@example.com",
+    "phone": "+7 912 345 67 89",
+    "country": "Russia",
+    "location": "Wurzburg",
+    "age": "18",
+    "status": "Student",
+    "profession": "IT",
+    "languages": [
+      "Russian",
+      "English"
+    ],
+    "preferred_language": "English",
+    "registered_at": "2026-01-15T22:08:20.437734",
+    "assessment_completed": true,
+    "adaptive_answers": [
+      {
+        "question": "Tell me about your hobbies and interests. What do you enjoy doing in your free time?",
+        "answer": "I like to read and watch movies."
+      },
+      {
+        "question": "Are there any activities, topics, or social situations you definitely want to avoid? This helps us find compatible matches.",
+        "answer": "I don't want to talk about politics."
+      },
+      {
+        "question": "How often are you available to meet new people? What times work best for you (weekdays/weekends, mornings/evenings)?",
+        "answer": "I'd like to meet someone every weekend."
+      },
+      {
+        "question": "You mentioned enjoying reading and watching movies \u2013 what specific genres or types do you like most (e.g., fiction, sci-fi, documentaries, romantic comedies)?",
+        "answer": "I prefer the fantasy genre."
+      },
+      {
+        "question": "For movie nights or book discussions, do you prefer intimate one-on-one meetups, small friend groups, or larger gatherings?",
+        "answer": "small friend groups"
+      },
+      {
+        "question": "What core qualities do you value most in friendships, like shared interests, trust, or humor?",
+        "answer": "shared interests"
+      },
+      {
+        "question": "Are there dietary preferences (vegetarian, allergies) or activity restrictions we should consider when planning weekend meetups?",
+        "answer": "no dietary preferences"
+      }
+    ],
+    "generated_questions": [
+      {
+        "id": "Q4",
+        "question": "You mentioned enjoying reading and watching movies \u2013 what specific genres or types do you like most (e.g., fiction, sci-fi, documentaries, romantic comedies)?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q5",
+        "question": "For movie nights or book discussions, do you prefer intimate one-on-one meetups, small friend groups, or larger gatherings?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q6",
+        "question": "What core qualities do you value most in friendships, like shared interests, trust, or humor?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q7",
+        "question": "Are there dietary preferences (vegetarian, allergies) or activity restrictions we should consider when planning weekend meetups?",
+        "type": "open_text"
+      }
+    ],
+    "nlp_profile": {
+      "summary": "",
+      "matching_summary": "",
+      "preferences": [
+        "prefers small friend group settings for activities",
+        "enjoys reading and watching movies",
+        "values shared interests most in friendships",
+        "specifically prefers the fantasy genre (books/movies)",
+        "available to meet people on weekends"
+      ],
+      "constraints": [
+        "Avoids discussing politics"
+      ],
+      "extracted_interests": [],
+      "personality_traits": [],
+      "key_facts": [
+        "Prefers small group interactions (indicates likely introverted/socially selective tendency)",
+        "Available exclusively on weekends",
+        "No dietary restrictions or preferences",
+        "Lifestyle prioritizes weekend socializing around shared hobbies (reading/movies/fantasy genre)"
+      ]
+    }
+  },
+  {
+    "user_id": "USER0008",
+    "name": "Kate ",
+    "email": "kate@example.com",
+    "phone": "+1 234 54 324 765",
+    "country": "Germany",
+    "location": "Wurzburg",
+    "age": "21",
+    "status": "Job Seeking",
+    "profession": "Business",
+    "languages": [
+      "English"
+    ],
+    "preferred_language": "English",
+    "registered_at": "2026-01-15T22:17:42.414604",
+    "assessment_completed": true,
+    "adaptive_answers": [
+      {
+        "question": "Tell me about your hobbies and interests. What do you enjoy doing in your free time?",
+        "answer": "I like books."
+      },
+      {
+        "question": "Are there any activities, topics, or social situations you definitely want to avoid? This helps us find compatible matches.",
+        "answer": "nothing"
+      },
+      {
+        "question": "How often are you available to meet new people? What times work best for you (weekdays/weekends, mornings/evenings)?",
+        "answer": "very evening"
+      },
+      {
+        "question": "What genres of books do you enjoy most - fiction, non-fiction, specific authors, or particular themes?",
+        "answer": "I like science fiction and just fantasy"
+      },
+      {
+        "question": "For book discussions or social meetups, do you prefer one-on-one conversations, small intimate groups, or larger gatherings?",
+        "answer": "one-on-one conversations"
+      },
+      {
+        "question": "What qualities are most important to you in friendships - shared interests, trust, humor, or something else?",
+        "answer": "shared interests"
+      },
+      {
+        "question": "You mentioned evenings work best - are weekdays or weekends preferable? Any dietary preferences for coffee/bookstore meetups?",
+        "answer": "weekdays and no alcohol"
+      }
+    ],
+    "generated_questions": [
+      {
+        "id": "Q4",
+        "question": "What genres of books do you enjoy most - fiction, non-fiction, specific authors, or particular themes?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q5",
+        "question": "For book discussions or social meetups, do you prefer one-on-one conversations, small intimate groups, or larger gatherings?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q6",
+        "question": "What qualities are most important to you in friendships - shared interests, trust, humor, or something else?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q7",
+        "question": "You mentioned evenings work best - are weekdays or weekends preferable? Any dietary preferences for coffee/bookstore meetups?",
+        "type": "open_text"
+      }
+    ],
+    "nlp_profile": {
+      "summary": "",
+      "matching_summary": "",
+      "preferences": [
+        "shared interests as the primary quality in friendships",
+        "books (specifically science fiction and fantasy genres)",
+        "one-on-one conversations",
+        "weekday evening availability for meetups",
+        "bookstore meetups (implied by context)"
+      ],
+      "constraints": [
+        "Avoids group gatherings (prefers one-on-one interactions)",
+        "Avoids alcohol during meetups"
+      ],
+      "extracted_interests": [],
+      "personality_traits": [],
+      "key_facts": [
+        "Introverted social preference (explicit one-on-one choice)",
+        "Weekday evening availability only (no weekends mentioned)",
+        "Quiet/reflective lifestyle (book-focused interests)",
+        "No dietary restrictions beyond alcohol avoidance",
+        "No specified deal-breakers beyond alcohol and group settings"
+      ]
+    }
+  },
+  {
+    "user_id": "USER0009",
+    "name": "Bob",
+    "email": "bob@example.com",
+    "phone": "+3 4576 774 9678",
+    "country": "Irish",
+    "location": "Wurzburg",
+    "age": "30",
+    "status": "Working",
+    "profession": "IT",
+    "languages": [
+      "English"
+    ],
+    "preferred_language": "English",
+    "registered_at": "2026-01-15T22:23:51.202609",
+    "assessment_completed": true,
+    "adaptive_answers": [
+      {
+        "question": "Tell me about your hobbies and interests. What do you enjoy doing in your free time?",
+        "answer": "I'm a professional athlete."
+      },
+      {
+        "question": "Are there any activities, topics, or social situations you definitely want to avoid? This helps us find compatible matches.",
+        "answer": "religion"
+      },
+      {
+        "question": "How often are you available to meet new people? What times work best for you (weekdays/weekends, mornings/evenings)?",
+        "answer": "I would like to go to meetings every weekend."
+      },
+      {
+        "question": "As a professional athlete, what specific sport do you compete in? What aspects of training or competition excite you most?",
+        "answer": "I'm a football player and I really like competitions for their atmosphere."
+      },
+      {
+        "question": "Besides avoiding religious settings, what types of venues or group environments do you prefer for meetups? (e.g., coffee shops, sports events, small gatherings)",
+        "answer": "sports events or just walking"
+      },
+      {
+        "question": "What qualities do you value most in friends - shared athletic interests, reliability, humor, or other traits?",
+        "answer": "humor"
+      },
+      {
+        "question": "Do you have dietary preferences (vegan/gluten-free) or post-training schedule constraints we should consider for weekend meetups?",
+        "answer": "I eat only healthy food."
+      }
+    ],
+    "generated_questions": [
+      {
+        "id": "Q4",
+        "question": "As a professional athlete, what specific sport do you compete in? What aspects of training or competition excite you most?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q5",
+        "question": "Besides avoiding religious settings, what types of venues or group environments do you prefer for meetups? (e.g., coffee shops, sports events, small gatherings)",
+        "type": "open_text"
+      },
+      {
+        "id": "Q6",
+        "question": "What qualities do you value most in friends - shared athletic interests, reliability, humor, or other traits?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q7",
+        "question": "Do you have dietary preferences (vegan/gluten-free) or post-training schedule constraints we should consider for weekend meetups?",
+        "type": "open_text"
+      }
+    ],
+    "nlp_profile": {
+      "summary": "",
+      "matching_summary": "",
+      "preferences": [
+        "healthy eating habits",
+        "football (professional athlete)",
+        "sports events and walking for socializing",
+        "humor in friends",
+        "weekend meetups",
+        "competitive sports atmosphere"
+      ],
+      "constraints": [
+        "Avoids religious topics/settings",
+        "Avoids unhealthy food environments"
+      ],
+      "extracted_interests": [],
+      "personality_traits": [],
+      "key_facts": [
+        "Professional football player",
+        "Extroverted (enjoys competition atmosphere)",
+        "Weekend availability only",
+        "Active lifestyle (athlete)",
+        "Dietary preference: healthy food only"
+      ]
+    }
+  },
+  {
+    "user_id": "USER0005",
+    "name": "Sarah",
+    "email": "sarah@example.com",
+    "phone": "+5 343 5432",
+    "country": "Canada",
+    "location": "Wurzburg",
+    "age": "23",
+    "status": "Student",
+    "profession": "AI",
+    "languages": [
+      "English",
+      "French"
+    ],
+    "preferred_language": "English",
+    "registered_at": "2026-01-15T22:30:57.965346",
+    "assessment_completed": true,
+    "adaptive_answers": [
+      {
+        "question": "Tell me about your hobbies and interests. What do you enjoy doing in your free time?",
+        "answer": "AI, programming, maths"
+      },
+      {
+        "question": "Are there any activities, topics, or social situations you definitely want to avoid? This helps us find compatible matches.",
+        "answer": "religion"
+      },
+      {
+        "question": "How often are you available to meet new people? What times work best for you (weekdays/weekends, mornings/evenings)?",
+        "answer": "I could see people 1-2 times a week on any day of the week."
+      },
+      {
+        "question": "What specific activities or hobbies would you like to do with new friends?",
+        "answer": "I'd like to go for a walk or travel."
+      },
+      {
+        "question": "Do you prefer one-on-one conversations, small groups of 3-5, or larger social gatherings?",
+        "answer": "I prefer small groups of 3-5"
+      },
+      {
+        "question": "What do you value most in friendships - shared interests, similar values, or complementary personalities?",
+        "answer": "shared interests"
+      },
+      {
+        "question": "Is there anything else about your lifestyle or preferences that would help us find good matches for you?",
+        "answer": "I am a vegan and I try to lead a healthy lifestyle."
+      }
+    ],
+    "generated_questions": [
+      {
+        "id": "Q4",
+        "question": "What specific activities or hobbies would you like to do with new friends?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q5",
+        "question": "Do you prefer one-on-one conversations, small groups of 3-5, or larger social gatherings?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q6",
+        "question": "What do you value most in friendships - shared interests, similar values, or complementary personalities?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q7",
+        "question": "Is there anything else about your lifestyle or preferences that would help us find good matches for you?",
+        "type": "open_text"
+      }
+    ],
+    "nlp_profile": {
+      "summary": "Sarah from Canada, currently in Wurzburg. Student, looking to connect with new people.",
+      "matching_summary": "User 23 years old. Student. Interests based on interview.",
+      "preferences": [],
+      "constraints": [],
+      "extracted_interests": [],
+      "personality_traits": [],
+      "key_facts": [
+        "User 23 years old. Student. Interests based on interview."
+      ]
+    }
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "categories": [
+    "social_connection",
+    "legal_support",
+    "mental_health",
+    "language_support"
+  ],
+  "general_questions": [],
+  "category_specific_questions": {}
+}
