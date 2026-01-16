@@ -60,7 +60,7 @@ Open your browser and navigate to the link
 ## 📁 Project Structure
 
 ```
-nlp_proj/
+nlp_social_matching/
 ├── app.py                    # Main Flask application and routes
 ├── src/                      # Source code package
 │   ├── nlp_processor.py          # Core NLP logic: Summarization, NER, Extraction
