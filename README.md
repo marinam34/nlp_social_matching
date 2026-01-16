@@ -62,12 +62,17 @@ Open your browser and navigate to the link
 ```
 nlp_proj/
 ├── app.py                    # Main Flask application and routes
-├── nlp_processor.py          # Core NLP logic: Summarization, NER, Extraction
-├── vector_database.py        # Embedding generation and vector storage/search
-├── matching_engine.py        # Matching logic: Conflicts, MMR, Ice-breakers
-├── adaptive_question_engine.py # LLM-based adaptive question generation
-├── users.json                # JSON database of user profiles
-├── user_embeddings.json      # JSON vector index for similarity search
+├── src/                      # Source code package
+│   ├── nlp_processor.py          # Core NLP logic: Summarization, NER, Extraction
+│   ├── vector_database.py        # Embedding generation and vector storage/search
+│   ├── matching_engine.py        # Matching logic: Conflicts, MMR, Ice-breakers
+│   ├── adaptive_question_engine.py # LLM-based adaptive question generation
+│   └── adaptive_questions_template.py # HTML template for questions
+├── data/                     # Data storage
+│   ├── users.json                # JSON database of user profiles
+│   ├── user_embeddings.json      # JSON vector index for similarity search
+│   ├── decision_tree.json        # Decision tree configuration
+│   └── translations_cache.json   # Cache for translations
 ├── requirements.txt          # Python dependencies
 └── .env                      # Environment variables (API Key)
 ```
