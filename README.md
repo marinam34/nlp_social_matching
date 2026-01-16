@@ -1,6 +1,8 @@
 # Connect - NLP-Powered Newcomer Matching Platform
 
-A web platform that helps newcomers in a city find friends and connections by analyzing their profiles and matching them with compatible people using ** Natural Language Processing (NLP)**.
+A web platform that helps newcomers in a city find friends and connections by analyzing their profiles and matching them with compatible people using **Natural Language Processing (NLP)**.
+
+The project was completed for Technische Hochschule Würzburg-Schweinfurt.
 
 
 
