@@ -1,8 +1,3 @@
-"""
-Adaptive Question Engine
-Generates truly adaptive questions using LLM
-"""
-
 import json
 from typing import Dict, List, Optional
 from openai import OpenAI
@@ -18,16 +13,10 @@ client = OpenAI(
 
 
 class AdaptiveQuestionEngine:
-    """
-    Generates truly adaptive questions that build on previous answers
-    Uses LLM to analyze answers and create relevant follow-up questions
-    """
-    
     def __init__(self, model="deepseek/deepseek-r1-0528:free"):
         self.model = model
-        self.total_questions = 7  # 3 fixed + 4 generated
+        self.total_questions = 7 
         
-        # Fixed questions that everyone gets (1-3)
         self.fixed_questions = [
             {
                 'id': 'Q1',
@@ -47,57 +36,22 @@ class AdaptiveQuestionEngine:
         ]
     
     def get_first_question(self, user_data: Dict) -> Dict:
-        """
-        Get the first fixed question
-        
-        Args:
-            user_data: Basic registration info (name, country, status, etc.)
-            
-        Returns:
-            Question dict with id and text
-        """
         return self.fixed_questions[0]
     
     def get_next_question(self, user_data: Dict, previous_answers: List[Dict]) -> Optional[Dict]:
-        """
-        Get next question - either fixed or generated
-        
-        Args:
-            user_data: User's basic info
-            previous_answers: List of {question, answer} dicts
-            
-        Returns:
-            Next question dict or None if all questions done
-        """
         question_num = len(previous_answers) + 1
         
-        # Stop after 7 questions
         if question_num > self.total_questions:
             return None
         
-        # Questions 1-3: Return fixed questions
         if question_num <= 3:
             return self.fixed_questions[question_num - 1]
-        
-        # Questions 4-7: Generate based on previous answers
+
         return self.generate_next_question(user_data, previous_answers)
     
     def generate_remaining_questions(self, user_data: Dict, previous_answers: List[Dict]) -> List[Dict]:
-        """
-        Generate ALL 4 remaining questions (Q4-Q7) in one batch after Q3
-        This is much faster than generating one at a time
-        
-        Args:
-            user_data: User's basic info
-            previous_answers: Should be exactly 3 answers (Q1-Q3)
-            
-        Returns:
-            List of 4 question dicts
-        """
-        # Build context from the 3 fixed questions
         context = self._build_context(user_data, previous_answers)
         
-        # Generate all 4 questions at once
         prompt = f"""{context}
 
 TASK: Based on the 3 answers above, generate exactly 4 follow-up questions (Q4, Q5, Q6, Q7).
@@ -131,24 +85,21 @@ NOW generate 4 questions for THIS person:"""
                     {"role": "system", "content": "You generate follow-up questions. Output ONLY the 4 questions in Q4:/Q5:/Q6:/Q7: format."},
                     {"role": "user", "content": prompt}
                 ],
-                max_tokens=2000, # Increased for Thinking Models
+                max_tokens=2000, 
                 temperature=0.7
             )
             
             result = response.choices[0].message.content.strip()
             print(f"\n=== LLM Raw Response ===\n{result}\n")
             
-            # Remove thinking tokens <think>...</think> if present
             import re
             result = re.sub(r'<think>.*?</think>', '', result, flags=re.DOTALL).strip()
-            
-            # Parse - be flexible with format
+
             questions = []
             lines = result.split('\n')
             
             for line in lines:
                 line = line.strip()
-                # Try to match Q4:, Q5:, Q6:, Q7:
                 if line.startswith('Q4:') or line.startswith('Q4.') or line.lower().startswith('q4:'):
                     q_text = line[3:].strip() if ':' in line[:4] else line[3:].strip()
                     questions.append({'id': 'Q4', 'question': q_text, 'type': 'open_text'})
@@ -162,7 +113,6 @@ NOW generate 4 questions for THIS person:"""
                     q_text = line[3:].strip() if ':' in line[:4] else line[3:].strip()
                     questions.append({'id': 'Q7', 'question': q_text, 'type': 'open_text'})
             
-            # Validate we got exactly 4 questions
             if len(questions) == 4:
                 print(f"✓ Successfully generated 4 personalized questions")
                 for q in questions:
@@ -174,11 +124,9 @@ NOW generate 4 questions for THIS person:"""
                 
         except Exception as e:
             print(f"Error generating batch questions: {e}")
-            # Do NOT raise, just return fallback
             return self._get_fallback_questions_batch()
     
     def _get_fallback_questions_batch(self) -> List[Dict]:
-        """Fallback questions if batch generation fails"""
         return [
             {'id': 'Q4', 'question': 'What specific activities or hobbies would you like to do with new friends?', 'type': 'open_text'},
             {'id': 'Q5', 'question': 'Do you prefer one-on-one conversations, small groups of 3-5, or larger social gatherings?', 'type': 'open_text'},
@@ -187,13 +135,8 @@ NOW generate 4 questions for THIS person:"""
         ]
     
     def generate_next_question(self, user_data: Dict, previous_answers: List[Dict]) -> Optional[Dict]:
-        """
-        DEPRECATED: Now we batch-generate Q4-Q7
-        This is kept for fallback only
-        """
         question_num = len(previous_answers) + 1
         
-        # This shouldn't be called anymore, but just in case
         fallback_questions = self._get_fallback_questions_batch()
         if question_num >= 4 and question_num <= 7:
             return fallback_questions[question_num - 4]
@@ -201,7 +144,6 @@ NOW generate 4 questions for THIS person:"""
         return None
     
     def _build_context(self, user_data: Dict, previous_answers: List[Dict]) -> str:
-        """Build conversation context for LLM"""
         context = f"""User Profile:
 - Name: {user_data.get('name', 'User')}
 - From: {user_data.get('country', 'Unknown')}
@@ -216,7 +158,6 @@ Conversation so far:"""
         return context
     
     def _get_fallback_question(self, question_num: int, previous_answers: List[Dict]) -> Dict:
-        """Fallback questions if LLM fails"""
         fallback_questions = [
             "How would you describe your social style? Do you prefer one-on-one hangouts, small groups, or larger gatherings?",
             "Are there any specific activities or topics you're NOT interested in? This helps us avoid mismatches.",
@@ -234,14 +175,6 @@ Conversation so far:"""
         }
     
     def extract_insights_for_matching(self, all_answers: List[Dict]) -> Dict:
-        """
-        Analyze all answers to extract key insights for matching
-        This is called after all questions are answered
-        
-        Returns:
-            Dict with extracted insights (preferences, constraints, key_facts)
-        """
-        # Combine all answers
         conversation = "\n\n".join([
             f"Question: {qa['question']}\nAnswer: {qa['answer']}"
             for qa in all_answers
@@ -317,7 +250,6 @@ Write concisely and specifically. Use a dash list format."""
             }
     
     def _parse_extraction_result(self, result: str) -> Dict:
-        """Parse the LLM extraction result into structured data"""
         insights = {
             'preferences': [],
             'constraints': [],
@@ -336,10 +268,8 @@ Write concisely and specifically. Use a dash list format."""
             elif 'KEY_FACTS:' in line:
                 current_section = 'key_facts'
             elif line.startswith('-') and current_section:
-                # Extract the item (remove the dash and clean up)
                 item = line[1:].strip()
                 if item:
-                    # Lowercase preferences for natural sentence usage
                     if current_section == 'preferences':
                         item = item[0].lower() + item[1:] 
                     
@@ -348,18 +278,7 @@ Write concisely and specifically. Use a dash list format."""
         return insights
 
 
-# Convenience function
 def get_next_adaptive_question(user_data: Dict, previous_answers: List[Dict]) -> Optional[Dict]:
-    """
-    Get the next adaptive question based on conversation history
-    
-    Args:
-        user_data: User's profile data
-        previous_answers: List of previous Q&A pairs
-        
-    Returns:
-        Next question or None if conversation is complete
-    """
     engine = AdaptiveQuestionEngine()
     
     if not previous_answers:

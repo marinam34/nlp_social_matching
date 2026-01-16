@@ -452,5 +452,85 @@
         "User 23 years old. Student. Interests based on interview."
       ]
     }
+  },
+  {
+    "user_id": "USER0006",
+    "name": "Max",
+    "email": "max@example.com",
+    "phone": "+1 2341 23 89 99",
+    "country": "Netherlands",
+    "location": "Wurzburg",
+    "age": "28",
+    "status": "Working",
+    "profession": "Engineer",
+    "languages": [
+      "English"
+    ],
+    "preferred_language": "English",
+    "registered_at": "2026-01-16T01:03:01.142094",
+    "assessment_completed": true,
+    "adaptive_answers": [
+      {
+        "question": "Tell me about your hobbies and interests. What do you enjoy doing in your free time?",
+        "answer": "I like Formula 1 and I know many languages."
+      },
+      {
+        "question": "Are there any activities, topics, or social situations you definitely want to avoid? This helps us find compatible matches.",
+        "answer": "nothing"
+      },
+      {
+        "question": "How often are you available to meet new people? What times work best for you (weekdays/weekends, mornings/evenings)?",
+        "answer": "on the weekends"
+      },
+      {
+        "question": "What specific activities or hobbies would you like to do with new friends?",
+        "answer": "I would like to go on a trip to Europe."
+      },
+      {
+        "question": "Do you prefer one-on-one conversations, small groups of 3-5, or larger social gatherings?",
+        "answer": "small groups of 3-5"
+      },
+      {
+        "question": "What do you value most in friendships - shared interests, similar values, or complementary personalities?",
+        "answer": "similar values"
+      },
+      {
+        "question": "Is there anything else about your lifestyle or preferences that would help us find good matches for you?",
+        "answer": "I'm a professional athlete."
+      }
+    ],
+    "generated_questions": [
+      {
+        "id": "Q4",
+        "question": "What specific activities or hobbies would you like to do with new friends?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q5",
+        "question": "Do you prefer one-on-one conversations, small groups of 3-5, or larger social gatherings?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q6",
+        "question": "What do you value most in friendships - shared interests, similar values, or complementary personalities?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q7",
+        "question": "Is there anything else about your lifestyle or preferences that would help us find good matches for you?",
+        "type": "open_text"
+      }
+    ],
+    "nlp_profile": {
+      "summary": "Max from Netherlands, currently in Wurzburg. Working, looking to connect with new people.",
+      "matching_summary": "User 28 years old. Working. Interests based on interview.",
+      "preferences": [],
+      "constraints": [],
+      "extracted_interests": [],
+      "personality_traits": [],
+      "key_facts": [
+        "User 28 years old. Working. Interests based on interview."
+      ]
+    }
   }
 ]

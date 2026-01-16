@@ -1,8 +1,3 @@
-"""
-Simple HTML template for adaptive questions page
-Questions are generated dynamically based on previous answers
-"""
-
 ADAPTIVE_QUESTIONS_TEMPLATE = """
 <!DOCTYPE html>
 <html>
@@ -181,9 +176,8 @@ ADAPTIVE_QUESTIONS_TEMPLATE = """
         const userId = new URLSearchParams(window.location.search).get('user_id');
         let currentQuestion = null;
         let allAnswers = [];
-        let maxQuestions = 7;  // 3 fixed + 4 generated
+        let maxQuestions = 7;
 
-        // Character count
         document.getElementById('answerInput').addEventListener('input', function() {
             const count = this.value.length;
             document.getElementById('charCount').textContent = count;
@@ -237,19 +231,16 @@ ADAPTIVE_QUESTIONS_TEMPLATE = """
                 return;
             }
 
-            // Save current answer
             allAnswers.push({
                 question: currentQuestion.question,
                 answer: answer
             });
 
-            // Check if we've reached max questions
             if (allAnswers.length >= maxQuestions) {
                 await finishQuestions();
                 return;
             }
 
-            // Get next question
             document.getElementById('questionCard').style.display = 'none';
             document.getElementById('loadingDiv').style.display = 'block';
 
@@ -271,7 +262,6 @@ ADAPTIVE_QUESTIONS_TEMPLATE = """
                 if (data.question) {
                     displayQuestion(data.question);
                 } else {
-                    // No more questions
                     await finishQuestions();
                 }
             } catch (error) {
@@ -286,8 +276,6 @@ ADAPTIVE_QUESTIONS_TEMPLATE = """
             if (allAnswers.length > 0) {
                 allAnswers.pop();
                 updateProgress();
-                // You would need to store questions to go back properly
-                // For simplicity, we'll just clear the current answer
                 document.getElementById('answerInput').value = '';
                 document.getElementById('charCount').textContent = '0';
                 document.getElementById('nextBtn').disabled = true;
@@ -310,7 +298,6 @@ ADAPTIVE_QUESTIONS_TEMPLATE = """
                 });
 
                 if (response.ok) {
-                    // Redirect to matches page
                     window.location.href = '/matches?user_id=' + userId;
                 } else {
                     alert('Error processing answers');
@@ -321,7 +308,6 @@ ADAPTIVE_QUESTIONS_TEMPLATE = """
             }
         }
 
-        // Load first question on page load
         loadFirstQuestion();
     </script>
 </body>

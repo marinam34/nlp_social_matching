@@ -5,15 +5,15 @@ from datetime import datetime
 from deep_translator import GoogleTranslator
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-# Import NLP modules
-from nlp_processor import analyze_profile
-from vector_database import VectorDatabase, add_user_to_index, find_similar_users
-from matching_engine import get_user_matches
-from adaptive_question_engine import AdaptiveQuestionEngine, get_next_adaptive_question
+
+from src.nlp_processor import analyze_profile
+from src.vector_database import VectorDatabase, add_user_to_index, find_similar_users
+from src.matching_engine import get_user_matches
+from src.adaptive_question_engine import AdaptiveQuestionEngine, get_next_adaptive_question
+from src.adaptive_questions_template import ADAPTIVE_QUESTIONS_TEMPLATE
 
 app = Flask(__name__)
 
-# Language code mapping
 LANGUAGE_CODES = {
     'English': 'en',
     'Spanish': 'es',
@@ -25,12 +25,9 @@ LANGUAGE_CODES = {
     'Other': 'en'
 }
 
-# Translation cache file
-TRANSLATIONS_CACHE_FILE = 'translations_cache.json'
+TRANSLATIONS_CACHE_FILE = 'data/translations_cache.json'
 
-# Load translation cache
 def load_translations_cache():
-    """Load cached translations from file"""
     if os.path.exists(TRANSLATIONS_CACHE_FILE):
         try:
             with open(TRANSLATIONS_CACHE_FILE, 'r', encoding='utf-8') as f:
@@ -40,19 +37,15 @@ def load_translations_cache():
             return {}
     return {}
 
-# Save translation cache
 def save_translations_cache(cache):
-    """Save translations cache to file"""
     try:
         with open(TRANSLATIONS_CACHE_FILE, 'w', encoding='utf-8') as f:
             json.dump(cache, f, indent=2, ensure_ascii=False)
     except Exception as e:
         print(f"Error saving cache: {e}")
 
-# Global cache
 translations_cache = load_translations_cache()
 
-# Registration HTML Template
 REGISTRATION_TEMPLATE = """
 <!DOCTYPE html>
 <html>
@@ -353,7 +346,6 @@ REGISTRATION_TEMPLATE = """
 </html>
 """
 
-# Assessment Welcome Page
 ASSESSMENT_WELCOME = """
 <!DOCTYPE html>
 <html>
@@ -462,7 +454,6 @@ ASSESSMENT_WELCOME = """
                 document.getElementById('languageDisplay').textContent = 
                     'Assessment will be in ' + userLanguage;
                 
-                // Translate the welcome page
                 if (userLanguage !== 'English') {
                     await translatePage();
                 }
@@ -514,7 +505,6 @@ ASSESSMENT_WELCOME = """
 </html>
 """
 
-# Assessment Questions Page  
 ASSESSMENT_QUESTIONS = """
 <!DOCTYPE html>
 <html>
@@ -730,7 +720,6 @@ ASSESSMENT_QUESTIONS = """
                 
                 document.getElementById('languageBadge').textContent = '🌐 ' + userLanguage;
                 
-                // Translate button texts
                 if (userLanguage !== 'English') {
                     await translateButtons();
                 }
@@ -776,7 +765,6 @@ ASSESSMENT_QUESTIONS = """
             
             await loadUserLanguage();
             
-            // Translate all questions if not in English
             if (userLanguage !== 'English') {
                 await translateAllQuestions();
             }
@@ -789,7 +777,6 @@ ASSESSMENT_QUESTIONS = """
             const allTexts = [];
             const questionIds = [];
             
-            // Collect all question texts and options
             generalQuestions.forEach(q => {
                 questionIds.push({ id: q.id, type: 'general' });
                 allTexts.push(q.question);
@@ -879,7 +866,6 @@ ASSESSMENT_QUESTIONS = """
             document.getElementById('questionNumber').textContent = 
                 `${buttonTexts.questionUpper || 'QUESTION'} ${currentNum}`;
             
-            // Use translated text if available
             if (translatedQuestions[question.id]) {
                 document.getElementById('questionText').textContent = 
                     translatedQuestions[question.id].question;
@@ -899,7 +885,6 @@ ASSESSMENT_QUESTIONS = """
                 const div = document.createElement('div');
                 div.className = 'option';
                 
-                // Use translated text if available
                 if (translatedQuestions[question.id]) {
                     div.textContent = translatedQuestions[question.id].options[index].text;
                 } else {
@@ -925,7 +910,6 @@ ASSESSMENT_QUESTIONS = """
         async function goNext() {
             if (!selectedOption) return;
 
-            // Save answer
             answers.push({
                 question_id: isInCategoryPhase ? 
                     categoryQuestions[currentQuestionIndex].id : 
@@ -934,7 +918,6 @@ ASSESSMENT_QUESTIONS = """
                 score: selectedOption.score
             });
 
-            // Update scores
             if (!isInCategoryPhase) {
                 for (let category in selectedOption.score) {
                     scores[category] += selectedOption.score[category];
@@ -943,12 +926,9 @@ ASSESSMENT_QUESTIONS = """
 
             currentQuestionIndex++;
 
-            // Check if general questions are done
             if (!isInCategoryPhase && currentQuestionIndex >= generalQuestions.length) {
-                // Find top category
                 topCategory = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
                 
-                // Load category-specific questions
                 categoryQuestions = decisionTree.category_specific_questions[topCategory] || [];
                 
                 if (categoryQuestions.length > 0) {
@@ -1007,7 +987,6 @@ ASSESSMENT_QUESTIONS = """
 </html>
 """
 
-# Results Page Template
 RESULTS_TEMPLATE = """
 <!DOCTYPE html>
 <html>
@@ -1433,7 +1412,6 @@ RESULTS_TEMPLATE = """
     </div>
 
     <script>
-        // Animate score bars on load
         window.addEventListener('load', () => {
             document.querySelectorAll('.score-fill').forEach(bar => {
                 const width = bar.style.width;
@@ -1448,7 +1426,6 @@ RESULTS_TEMPLATE = """
 </html>
 """
 
-# Matches Page Template
 MATCHES_TEMPLATE = """
 <!DOCTYPE html>
 <html>
@@ -1785,7 +1762,6 @@ MATCHES_TEMPLATE = """
                 container.appendChild(card);
             });
 
-            // Animate compatibility bars
             setTimeout(() => {
                 document.querySelectorAll('.compatibility-fill').forEach(bar => {
                     const width = bar.style.width;
@@ -1827,32 +1803,43 @@ MATCHES_TEMPLATE = """
 </html>
 """
 
-# Initialize files
 def init_files():
-    if not os.path.exists('users.json'):
-        with open('users.json', 'w') as f:
+    if not os.path.exists('data/users.json'):
+        with open('data/users.json', 'w') as f:
             json.dump([], f)
-    if not os.path.exists('decision_tree.json'):
-        # Create default decision tree if not exists
+    
+    if not os.path.exists('data/decision_tree.json'):
         default_tree = {
             "version": "1.0",
             "categories": ["social_connection", "legal_support", "mental_health", "language_support"],
-            "general_questions": [],
+            "general_questions": [
+                {
+                    "id": "q1",
+                    "question": "What is your primary goal today?",
+                    "options": [
+                        {"text": "Meet new people", "score": {"social_connection": 5, "mental_health": 2}},
+                        {"text": "Find legal help", "score": {"legal_support": 5}},
+                        {"text": "Learn a language", "score": {"language_support": 5, "social_connection": 2}},
+                        {"text": "Talk to someone", "score": {"mental_health": 5, "social_connection": 3}}
+                    ]
+                }
+            ],
             "category_specific_questions": {}
         }
-        with open('decision_tree.json', 'w') as f:
+        with open('data/decision_tree.json', 'w') as f:
             json.dump(default_tree, f, indent=2)
 
 def read_users():
-    with open('users.json', 'r') as f:
-        return json.load(f)
+    if os.path.exists('data/users.json'):
+        with open('data/users.json', 'r') as f:
+            return json.load(f)
+    return []
 
 def write_users(users):
-    with open('users.json', 'w') as f:
+    with open('data/users.json', 'w') as f:
         json.dump(users, f, indent=2)
 
 def translate_text(text, target_language):
-    """Translate text to target language using Google Translate"""
     try:
         if target_language == 'English' or not text:
             return text
@@ -1869,7 +1856,6 @@ def translate_text(text, target_language):
         return text
 
 def translate_batch(texts, target_language, max_workers=10):
-    """Translate multiple texts with caching and parallel processing"""
     global translations_cache
     
     try:
@@ -1880,7 +1866,6 @@ def translate_batch(texts, target_language, max_workers=10):
         if lang_code == 'en':
             return texts
         
-        # Create cache key for this language
         if lang_code not in translations_cache:
             translations_cache[lang_code] = {}
         
@@ -1892,27 +1877,24 @@ def translate_batch(texts, target_language, max_workers=10):
         texts_to_translate = []
         text_indices = []
         
-        # Check cache first
         cached_count = 0
         for i, text in enumerate(texts):
             if not text or text.strip() == '':
                 translated.append(text)
                 continue
             
-            # Check if translation exists in cache
             if text in translations_cache[lang_code]:
                 translated.append(translations_cache[lang_code][text])
                 cached_count += 1
                 print(f"✓ Using cached: '{text[:30]}...'")
             else:
-                translated.append(None)  # Placeholder
+                translated.append(None) 
                 texts_to_translate.append(text)
                 text_indices.append(i)
         
         print(f"Cached: {cached_count}/{len(texts)}")
         print(f"To translate: {len(texts_to_translate)}")
         
-        # Translate only non-cached texts using parallel processing
         if texts_to_translate:
             print(f"Starting parallel translation with {max_workers} workers...")
             
@@ -1925,7 +1907,6 @@ def translate_batch(texts, target_language, max_workers=10):
                     print(f"Error translating '{text[:30]}...': {e}")
                     return (index, text, text)
             
-            # Use ThreadPoolExecutor for parallel translation
             with ThreadPoolExecutor(max_workers=max_workers) as executor:
                 futures = [
                     executor.submit(translate_single, text, i) 
@@ -1936,10 +1917,8 @@ def translate_batch(texts, target_language, max_workers=10):
                     index, original_text, translated_text = future.result()
                     actual_index = text_indices[index]
                     translated[actual_index] = translated_text
-                    # Save to cache
                     translations_cache[lang_code][original_text] = translated_text
             
-            # Save cache after new translations
             save_translations_cache(translations_cache)
             print(f"✓ Completed and cached {len(texts_to_translate)} translations")
         
@@ -1979,7 +1958,7 @@ def register():
             'preferred_language': data['preferred_language'],
             'registered_at': datetime.now().isoformat(),
             'assessment_completed': False,
-            'adaptive_answers': []  # NEW: stores adaptive question answers
+            'adaptive_answers': [] 
         }
         
         users.append(new_user)
@@ -2015,16 +1994,14 @@ def translate():
         print(f"Translation endpoint error: {e}")
         return jsonify({'error': str(e)}), 500
 
-# NEW: Adaptive questions workflow (replaces old decision tree)
 @app.route('/questions')
 def questions_page():
     """New adaptive questions page"""
-    from adaptive_questions_template import ADAPTIVE_QUESTIONS_TEMPLATE
+
     return render_template_string(ADAPTIVE_QUESTIONS_TEMPLATE)
 
 @app.route('/api/get-first-question', methods=['POST'])
 def get_first_question():
-    """Get the first adaptive question based on user profile"""
     try:
         data = request.json
         user_id = data.get('user_id')
@@ -2048,7 +2025,6 @@ def get_first_question():
 
 @app.route('/api/get-next-question', methods=['POST'])
 def get_next_question():
-    """Generate next adaptive question based on previous answers"""
     try:
         data = request.json
         user_id = data.get('user_id')
@@ -2062,30 +2038,24 @@ def get_next_question():
         
         question_num = len(previous_answers) + 1
         
-        # If we just finished Q3, batch-generate Q4-Q7
         if question_num == 4:
             print("\n=== After Q3: Generating all remaining questions ===")
             engine = AdaptiveQuestionEngine()
             generated_questions = engine.generate_remaining_questions(user, previous_answers)
             
-            # Cache the generated questions in user data
             user['generated_questions'] = generated_questions
             write_users(users)
             
-            # Return Q4
             return jsonify({'question': generated_questions[0]}), 200
         
-        # For Q5-Q7, retrieve from cache
         elif question_num >= 5 and question_num <= 7:
             generated_questions = user.get('generated_questions', [])
             
             if generated_questions and len(generated_questions) >= (question_num - 3):
-                # Return cached question
                 question = generated_questions[question_num - 4]
                 print(f"✓ Returning cached Q{question_num}: {question['question'][:50]}...")
                 return jsonify({'question': question}), 200
             else:
-                # Fallback if cache missing
                 print(f"Warning: Cache missing for Q{question_num}, regenerating...")
                 engine = AdaptiveQuestionEngine()
                 generated_questions = engine.generate_remaining_questions(user, previous_answers[:3])
@@ -2093,7 +2063,6 @@ def get_next_question():
                 write_users(users)
                 return jsonify({'question': generated_questions[question_num - 4]}), 200
         
-        # For Q1-Q3, use get_next_question (returns fixed questions)
         else:
             engine = AdaptiveQuestionEngine()
             question = engine.get_next_question(user, previous_answers)
@@ -2111,7 +2080,6 @@ def get_next_question():
 
 @app.route('/api/complete-questions', methods=['POST'])
 def complete_questions():
-    """Process all answers and run NLP analysis"""
     try:
         data = request.json
         user_id = data.get('user_id')
@@ -2125,19 +2093,16 @@ def complete_questions():
         
         print(f"\n=== Processing {len(answers)} answers for {user_id} ===")
         
-        # Store answers
         user['adaptive_answers'] = answers
         user['assessment_completed'] = True
         
-        # Run NLP analysis pipeline
         try:
             print("1. Running NLP analysis...")
             
-            # Analyze profile
             nlp_profile = analyze_profile(
                 user_data=user,
                 assessment_answers=answers,
-                detailed_answers=answers  # Same answers
+                detailed_answers=answers 
             )
             
             user['nlp_profile'] = nlp_profile
@@ -2145,17 +2110,14 @@ def complete_questions():
             print(f"   ✓ Preferences: {nlp_profile.get('preferences', [])[:3]}")
             print(f"   ✓ Constraints: {nlp_profile.get('constraints', [])[:2]}")
             
-            # Generate embedding
             print("2. Generating embedding...")
             add_user_to_index(user_id, user, nlp_profile)
             print("   ✓ Embedding created and stored")
             
-            # Extract additional insights using adaptive engine
             print("3. Extracting insights...")
             engine = AdaptiveQuestionEngine()
             insights = engine.extract_insights_for_matching(answers)
             
-            # Merge insights into nlp_profile
             if insights.get('preferences'):
                 user['nlp_profile']['preferences'] = list(set(
                     user['nlp_profile'].get('preferences', []) + insights['preferences']
@@ -2173,7 +2135,6 @@ def complete_questions():
             print(f"NLP analysis error: {e}")
             import traceback
             traceback.print_exc()
-            # Continue even if NLP fails - will use basic data
         
         write_users(users)
         print("=== Profile complete! ===")
@@ -2203,25 +2164,20 @@ def submit_assessment():
                 'top_category': data['top_category'],
                 'completed_at': datetime.now().isoformat()
             }
-            
-            # NEW: Run NLP analysis pipeline
+
             try:
                 print(f"Running NLP analysis for {user_id}...")
                 
-                # Get detailed answers if available
                 detailed_answers = user.get('detailed_answers', [])
                 
-                # Run NLP analysis
                 nlp_profile = analyze_profile(
                     user_data=user,
                     assessment_answers=data['answers'],
                     detailed_answers=detailed_answers
                 )
                 
-                # Add to user data
                 user['nlp_profile'] = nlp_profile
                 
-                # Generate and store embedding
                 add_user_to_index(user_id, user, nlp_profile)
                 
                 print(f"✓ NLP analysis complete for {user_id}")
@@ -2229,7 +2185,6 @@ def submit_assessment():
                 
             except Exception as e:
                 print(f"NLP analysis error: {e}")
-                # Continue even if NLP fails
             
             write_users(users)
             return jsonify({'message': 'Assessment completed'}), 200
@@ -2249,19 +2204,14 @@ def results():
     
     return render_template_string(RESULTS_TEMPLATE, user=user)
 
-# ===== NEW NLP-POWERED ROUTES =====
 
 @app.route('/api/adaptive-questions', methods=['POST'])
 def adaptive_questions():
-    """
-    Generate personalized follow-up questions based on assessment answers
-    """
     try:
         data = request.json
         user_id = data.get('user_id')
         assessment_answers = data.get('assessment_answers', [])
         
-        # Generate adaptive questions
         questions = get_adaptive_questions(assessment_answers, num=4)
         
         return jsonify({'questions': questions}), 200
@@ -2271,9 +2221,6 @@ def adaptive_questions():
 
 @app.route('/api/submit-detailed-answers', methods=['POST'])
 def submit_detailed_answers():
-    """
-    Save detailed answers from adaptive questions
-    """
     try:
         data = request.json
         user_id = data.get('user_id')
@@ -2285,10 +2232,8 @@ def submit_detailed_answers():
         if not user:
             return jsonify({'error': 'User not found'}), 404
         
-        # Store detailed answers
         user['detailed_answers'] = detailed_answers
         
-        # Re-run NLP analysis with new data
         try:
             nlp_profile = analyze_profile(
                 user_data=user,
@@ -2311,9 +2256,6 @@ def submit_detailed_answers():
 
 @app.route('/api/matches/<user_id>')
 def get_matches(user_id):
-    """
-    Get top 3 recommended matches for a user
-    """
     try:
         users = read_users()
         user = next((u for u in users if u['user_id'] == user_id), None)
@@ -2324,7 +2266,6 @@ def get_matches(user_id):
         if not user.get('assessment_completed'):
             return jsonify({'error': 'Assessment not completed'}), 400
         
-        # Get matches using the matching engine
         matches = get_user_matches(user_id, users, top_n=3)
         
         return jsonify({
@@ -2341,9 +2282,6 @@ def get_matches(user_id):
 
 @app.route('/api/user-profile/<user_id>')
 def get_user_profile(user_id):
-    """
-    Get full user profile including NLP-generated data
-    """
     try:
         users = read_users()
         user = next((u for u in users if u['user_id'] == user_id), None)
@@ -2351,7 +2289,6 @@ def get_user_profile(user_id):
         if not user:
             return jsonify({'error': 'User not found'}), 404
         
-        # Return sanitized profile (remove sensitive data if needed)
         profile = {
             'user_id': user['user_id'],
             'name': user.get('name'),
@@ -2368,11 +2305,18 @@ def get_user_profile(user_id):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/get-decision-tree')
+def get_decision_tree():
+    """Get the decision tree configuration"""
+    try:
+        with open('data/decision_tree.json', 'r') as f:
+            tree = json.load(f)
+        return jsonify(tree)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/matches')
 def matches_page():
-    """
-    Display matches page
-    """
     user_id = request.args.get('user_id')
     if not user_id:
         return "User ID required", 400
