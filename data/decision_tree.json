@@ -6,6 +6,40 @@
     "mental_health",
     "language_support"
   ],
-  "general_questions": [],
+  "general_questions": [
+    {
+      "id": "q1",
+      "question": "What is your primary goal today?",
+      "options": [
+        {
+          "text": "Meet new people",
+          "score": {
+            "social_connection": 5,
+            "mental_health": 2
+          }
+        },
+        {
+          "text": "Find legal help",
+          "score": {
+            "legal_support": 5
+          }
+        },
+        {
+          "text": "Learn a language",
+          "score": {
+            "language_support": 5,
+            "social_connection": 2
+          }
+        },
+        {
+          "text": "Talk to someone",
+          "score": {
+            "mental_health": 5,
+            "social_connection": 3
+          }
+        }
+      ]
+    }
+  ],
   "category_specific_questions": {}
 }

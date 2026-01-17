@@ -169,23 +169,24 @@ class MMRSelector:
 
 class IceBreakerGenerator:
     
-    def __init__(self, model="deepseek/deepseek-r1-0528:free"):
+    def __init__(self, model="xiaomi/mimo-v2-flash:free"):
         self.model = model
     
-    def generate_icebreaker(self, user_a_data: Dict, user_b_data: Dict) -> str:
+    def generate_icebreaker(self, user_a_data: Dict, user_b_data: Dict, match_type: str = 'primary', is_loose_match: bool = False) -> str:
+        goal_b = user_b_data.get('goal', 'social_connection').replace('_', ' ').title()
+        name_b = user_b_data.get('name', 'This person')
+        
+        goal_prefix = f"{name_b}'s primary goal is {goal_b}. "
+        
+        if match_type == 'peer':
+            goal_prefix = f"{name_b} is also looking for {goal_b}. You are in the same boat! "
+        
+        loose_warning = ""
+        if is_loose_match:
+            loose_warning = "Even though you might have different viewpoints on some topics, "
 
         a_profile = user_a_data.get('nlp_profile', {})
         b_profile = user_b_data.get('nlp_profile', {})
-
-        a_facts = a_profile.get('key_facts', [])
-        b_facts = b_profile.get('key_facts', [])
-        
-        def format_qa(u_data):
-            qa_list = u_data.get('adaptive_answers', [])
-            return "\n".join([f"- {qa['answer']}" for qa in qa_list if len(qa['answer']) > 5])
-
-        a_context = format_qa(user_a_data)
-        b_context = format_qa(user_b_data)
 
         a_prefs = a_profile.get('preferences', [])
         b_prefs = b_profile.get('preferences', [])
@@ -197,74 +198,15 @@ class IceBreakerGenerator:
                 words2 = set(p2.lower().split())
                 if words1.intersection(words2):
                     shared.append(p1) 
+                    break 
 
-        print(f"\n=== Generating Icebreaker === (Enriched Context)")
-        print(f"User A Context (Facts+Answers): {len(a_facts)} facts, {len(a_context)} chars, {len(a_prefs)} prefs")
-        print(f"User B Context (Facts+Answers): {len(b_facts)} facts, {len(b_context)} chars, {len(b_prefs)} prefs")
-        
-        prompt = f"""TASK: Suggest how User 1 can start a conversation with User 2.
-
-User 1 (The Searcher):
-Details: {a_context}
-Facts: {', '.join(a_facts)}
-Interests: {', '.join(a_prefs) if a_prefs else 'None explicit'}
-
-User 2 (The Match):
-Details: {b_context}
-Facts: {', '.join(b_facts)}
-Interests: {', '.join(b_prefs) if b_prefs else 'None explicit'}
-
-Write ONE specific, friendly suggestion on how User 1 can start a conversation with User 2.
-Focus on specific details they both mentioned or compatible interests.
-
-Examples:
-- "Since you both enjoy freestyle skiing, ask where their favorite spot is!"
-- "Twice a week availability matches perfectly - suggest a weekend cafe meeting."
-
-IMPORTANT: 
-- Write from the second person ("You could...", "Suggest...")
-- Be specific and practical
-- One sentence only
-- Write in English"""
-
-        max_retries = 2
-        for i in range(max_retries):
-            try:
-                response = client.chat.completions.create(
-                    model=self.model,
-                    messages=[
-                        {"role": "system", "content": "You are an expert in building social connections and helping people start friendly conversations."},
-                        {"role": "user", "content": prompt}
-                    ],
-                    max_tokens=150,
-                    temperature=0.7
-                )
-                
-                result = response.choices[0].message.content.strip()
-                print(f"LLM Raw Result: '{result}'")
-                
-                import re
-                result = re.sub(r'<think>.*?</think>', '', result, flags=re.DOTALL).strip()
-                
-                clean_result = result.strip('"')
-                if clean_result and "Introduce yourself" not in clean_result:
-                     return clean_result
-                
-                if i < max_retries - 1:
-                    print("Empty/Generic response, retrying...")
-                    continue
-                     
-            except Exception as e:
-                print(f"Error generating icebreaker (attempt {i+1}): {e}")
-                if i < max_retries - 1: continue
-        
         if shared:
             topics = list(set(shared))[:2]
             clean_topics = [t.lower() for t in topics]
             topic_str = " and ".join(clean_topics)
-            return f"You both are interested in {topic_str} – that's a great topic to start!"
+            return f"{goal_prefix}{loose_warning}You both share interest in {topic_str}. Maybe you can compare notes!"
             
-        return "Introduce yourself and ask about their favorite hobbies to start the conversation!"
+        return f"{goal_prefix}{loose_warning}Try introducing yourself and sharing what you've learned about {goal_b.lower()} so far!"
             
 
     
@@ -300,29 +242,69 @@ class MatchingEngine:
         if not query_user:
             return []
         
-        compatible_candidates = []
+        query_goal = query_user.get('goal', 'social_connection')
+        
+        primary_targets = [query_goal]
+        if query_goal == 'legal_support':
+            primary_targets = ['provide_legal_support']
+        elif query_goal == 'provide_legal_support':
+            primary_targets = ['legal_support']
+
+        primary_safe = []
+        peer_safe = []
+        primary_loose = []
+        peer_loose = []
+
         for uid, similarity, metadata in candidates:
             candidate_user = users_dict.get(uid)
-            if candidate_user and self.conflict_detector.mutual_compatibility(query_user, candidate_user):
-                compatible_candidates.append((uid, similarity, metadata))
+            if not candidate_user:
+                continue
+            
+            cand_goal = candidate_user.get('goal', 'social_connection')
+            is_primary = cand_goal in primary_targets
+            is_peer = (cand_goal == query_goal)
+            
+            compatible = self.conflict_detector.mutual_compatibility(query_user, candidate_user)
+            
+            match_info = (uid, similarity, metadata)
+            
+            if is_primary:
+                if compatible:
+                    primary_safe.append(match_info + ('primary', False))
+                else:
+                    primary_loose.append(match_info + ('primary', True))
+            elif is_peer:
+                if compatible:
+                    peer_safe.append(match_info + ('peer', False))
+                else:
+                    peer_loose.append(match_info + ('peer', True))
         
-        print(f"After conflict filtering: {len(compatible_candidates)}/{len(candidates)} candidates")
+        final_candidates = []
         
-        diverse_matches = self.mmr_selector.select_diverse_matches(
-            user_id, compatible_candidates, top_n=top_n
+        combined_pool = primary_safe + peer_safe + primary_loose + peer_loose
+        
+       
+        diverse_raw = self.mmr_selector.select_diverse_matches(
+            user_id, [c[:3] for c in combined_pool], top_n=top_n
         )
         
+        pool_dict = {c[0]: (c[3], c[4]) for c in combined_pool}
+        
         match_cards = []
-        for uid, similarity, metadata in diverse_matches:
+        for uid, similarity, metadata in diverse_raw:
             matched_user = users_dict.get(uid)
             if not matched_user:
                 continue
+            
+            match_type, is_loose = pool_dict.get(uid, ('primary', False))
             
             query_interests = set(query_user.get('nlp_profile', {}).get('preferences', []))
             match_interests = set(matched_user.get('nlp_profile', {}).get('preferences', []))
             shared = list(query_interests & match_interests)
             
-            icebreaker = self.icebreaker_gen.generate_icebreaker(query_user, matched_user)
+            icebreaker = self.icebreaker_gen.generate_icebreaker(
+                query_user, matched_user, match_type=match_type, is_loose_match=is_loose
+            )
             explanation = self.icebreaker_gen.generate_match_explanation(similarity, shared)
             
             match_card = {
@@ -331,6 +313,8 @@ class MatchingEngine:
                 'email': matched_user.get('email', ''),
                 'similarity_score': float(similarity),
                 'compatibility_percentage': int(similarity * 100),
+                'match_type': match_type,
+                'is_loose_match': is_loose,
                 'summary': metadata.get('summary', ''),
                 'shared_interests': shared[:3],
                 'icebreaker': icebreaker,

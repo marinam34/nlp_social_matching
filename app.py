@@ -281,6 +281,18 @@ REGISTRATION_TEMPLATE = """
                     </select>
                 </div>
 
+                <div class="form-group">
+                    <label>What are you looking for? (Primary Goal) *</label>
+                    <select name="goal" required>
+                        <option value="">Select your goal...</option>
+                        <option value="social_connection">Social Connection (Meet new people)</option>
+                        <option value="legal_support">Legal Support (Uni, work, visa, etc.)</option>
+                        <option value="provide_legal_support">Provide Legal Support (Help others)</option>
+                        <option value="mental_health">Mental Health Support (Talk to someone)</option>
+                        <option value="language_assistance">Language Assistance (Improve skills)</option>
+                    </select>
+                </div>
+
                 <button type="submit">Register</button>
             </form>
             <div id="message"></div>
@@ -310,7 +322,8 @@ REGISTRATION_TEMPLATE = """
                 status: formData.get('status'),
                 profession: formData.get('profession'),
                 languages: formData.get('languages').split(',').map(l => l.trim()),
-                preferred_language: formData.get('preferred_language')
+                preferred_language: formData.get('preferred_language'),
+                goal: formData.get('goal')
             };
 
             try {
@@ -1653,6 +1666,36 @@ MATCHES_TEMPLATE = """
             color: #666;
             line-height: 1.6;
         }
+        .support-box {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+            margin-bottom: 60px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-left: 8px solid #667eea;
+            animation: slideIn 0.8s;
+        }
+        .support-box h3 {
+            color: #333;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .support-box p {
+            color: #666;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+        .support-box a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .support-box a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -1668,6 +1711,8 @@ MATCHES_TEMPLATE = """
         </div>
 
         <div id="matchesContainer" class="matches-grid" style="display: none;"></div>
+        
+        <div id="supportBox" class="support-box" style="display: none;"></div>
         
         <div id="noMatchesDiv" class="no-matches" style="display: none;">
             <div class="no-matches-icon">🔍</div>
@@ -1699,6 +1744,7 @@ MATCHES_TEMPLATE = """
 
                 if (data.matches && data.matches.length > 0) {
                     displayMatches(data.matches);
+                    showSupportBox(data.goal);
                 } else {
                     document.getElementById('noMatchesDiv').style.display = 'block';
                 }
@@ -1769,6 +1815,37 @@ MATCHES_TEMPLATE = """
                     setTimeout(() => bar.style.width = width, 100);
                 });
             }, 300);
+        }
+
+        function showSupportBox(goal) {
+            const box = document.getElementById('supportBox');
+            const info = {
+                'mental_health': {
+                    title: '💡 Important Information',
+                    text: 'You can always call the anonymous support service at <strong>+1 234 567 89 01</strong>.'
+                },
+                'legal_support': {
+                    title: '⚖️ Legal Assistance',
+                    text: 'You can ask your questions related to documents to the lawyer on duty at <strong>+2 123 456 78 90</strong> or by email <a href="mailto:lawyer@example.com">lawyer@example.com</a>. You can also find more information on the <a href="http://cityinfo.com" target="_blank">cityinfo.com</a> website.'
+                },
+                'language_assistance': {
+                    title: '🗣️ Language Practice',
+                    text: 'Besides matching with partners here, you can also search for local language clubs and tandem meetings in the city to practice your skills!'
+                },
+                'provide_legal_support': {
+                    title: '🌟 Peer Mentor Role',
+                    text: 'Thank you for offering your help! You have been matched with people who specifically need legal and administrative guidance. Your experience can make a huge difference in their journey.'
+                }
+            };
+
+            const content = info[goal];
+            if (content) {
+                box.innerHTML = `
+                    <h3>${content.title}</h3>
+                    <p>${content.text}</p>
+                `;
+                box.style.display = 'block';
+            }
         }
 
         loadMatches();
@@ -1944,8 +2021,22 @@ def register():
         if any(u['email'] == data['email'] for u in users):
             return jsonify({'error': 'Email already registered'}), 400
         
+        # Robust ID generation to avoid collisions
+        max_id = 0
+        for u in users:
+            uid = u.get('user_id', '')
+            if uid.startswith('USER'):
+                try:
+                    num = int(uid.replace('USER', ''))
+                    if num > max_id:
+                        max_id = num
+                except ValueError:
+                    continue
+        
+        user_id = f"USER{max_id + 1:04d}"
+        
         new_user = {
-            'user_id': f"USER{len(users) + 1:04d}",
+            'user_id': user_id,
             'name': data['name'],
             'email': data['email'],
             'phone': data.get('phone', ''),
@@ -1956,6 +2047,7 @@ def register():
             'profession': data.get('profession', ''),
             'languages': data['languages'],
             'preferred_language': data['preferred_language'],
+            'goal': data.get('goal', 'social_connection'), # Added 'goal' field
             'registered_at': datetime.now().isoformat(),
             'assessment_completed': False,
             'adaptive_answers': [] 
@@ -2043,9 +2135,18 @@ def get_next_question():
             engine = AdaptiveQuestionEngine()
             generated_questions = engine.generate_remaining_questions(user, previous_answers)
             
+            if not generated_questions:
+                print("PANIC: generated_questions is None!")
+                generated_questions = [] # Safety
+                
             user['generated_questions'] = generated_questions
             write_users(users)
             
+            if not generated_questions:
+                # Fallback directly in case something went very wrong
+                q = {"id": "Q4", "question": "Could you tell me more about your background?", "type": "open_text"}
+                return jsonify({'question': q}), 200
+
             return jsonify({'question': generated_questions[0]}), 200
         
         elif question_num >= 5 and question_num <= 7:
@@ -2061,6 +2162,13 @@ def get_next_question():
                 generated_questions = engine.generate_remaining_questions(user, previous_answers[:3])
                 user['generated_questions'] = generated_questions
                 write_users(users)
+                
+                if not generated_questions or len(generated_questions) < (question_num - 3):
+                     print(f"PANIC: Still no questions after regeneration for Q{question_num}")
+                     return jsonify({'error': 'Failed to generate questions'}), 500
+
+                if not generated_questions or len(generated_questions) < (question_num - 3):
+                    return jsonify({'error': 'Question missing'}), 500
                 return jsonify({'question': generated_questions[question_num - 4]}), 200
         
         else:
@@ -2112,24 +2220,7 @@ def complete_questions():
             
             print("2. Generating embedding...")
             add_user_to_index(user_id, user, nlp_profile)
-            print("   ✓ Embedding created and stored")
-            
-            print("3. Extracting insights...")
-            engine = AdaptiveQuestionEngine()
-            insights = engine.extract_insights_for_matching(answers)
-            
-            if insights.get('preferences'):
-                user['nlp_profile']['preferences'] = list(set(
-                    user['nlp_profile'].get('preferences', []) + insights['preferences']
-                ))[:10]
-            if insights.get('constraints'):
-                user['nlp_profile']['constraints'] = list(set(
-                    user['nlp_profile'].get('constraints', []) + insights['constraints']
-                ))[:5]
-            if insights.get('key_facts'):
-                user['nlp_profile']['key_facts'] = insights['key_facts']
-            
-            print(f"   ✓ Enhanced with {len(insights.get('key_facts', []))} key facts")
+            print("   ✓ Profile indexed and matchable")
             
         except Exception as e:
             print(f"NLP analysis error: {e}")
@@ -2270,6 +2361,7 @@ def get_matches(user_id):
         
         return jsonify({
             'user_id': user_id,
+            'goal': user.get('goal', 'social_connection'),
             'matches': matches,
             'total_candidates': len([u for u in users if u.get('assessment_completed') and u['user_id'] != user_id])
         }), 200

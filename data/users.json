@@ -13,6 +13,7 @@
       "English"
     ],
     "preferred_language": "English",
+    "goal": "social_connection",
     "registered_at": "2026-01-15T21:45:43.032322",
     "assessment_completed": true,
     "adaptive_answers": [
@@ -108,6 +109,7 @@
       "English"
     ],
     "preferred_language": "English",
+    "goal": "social_connection",
     "registered_at": "2026-01-15T22:08:20.437734",
     "assessment_completed": true,
     "adaptive_answers": [
@@ -199,6 +201,7 @@
       "English"
     ],
     "preferred_language": "English",
+    "goal": "social_connection",
     "registered_at": "2026-01-15T22:17:42.414604",
     "assessment_completed": true,
     "adaptive_answers": [
@@ -292,6 +295,7 @@
       "English"
     ],
     "preferred_language": "English",
+    "goal": "social_connection",
     "registered_at": "2026-01-15T22:23:51.202609",
     "assessment_completed": true,
     "adaptive_answers": [
@@ -387,6 +391,7 @@
       "French"
     ],
     "preferred_language": "English",
+    "goal": "social_connection",
     "registered_at": "2026-01-15T22:30:57.965346",
     "assessment_completed": true,
     "adaptive_answers": [
@@ -467,6 +472,7 @@
       "English"
     ],
     "preferred_language": "English",
+    "goal": "social_connection",
     "registered_at": "2026-01-16T01:03:01.142094",
     "assessment_completed": true,
     "adaptive_answers": [
@@ -530,6 +536,628 @@
       "personality_traits": [],
       "key_facts": [
         "User 28 years old. Working. Interests based on interview."
+      ]
+    }
+  },
+  {
+    "user_id": "USER0017",
+    "name": "Tom",
+    "email": "tom@example.com",
+    "phone": "+3 4563 56 756",
+    "country": "USA",
+    "location": "Wurzburg",
+    "age": "26",
+    "status": "Working",
+    "profession": "engineer",
+    "languages": [
+      "English",
+      "German"
+    ],
+    "preferred_language": "English",
+    "goal": "language_assistance",
+    "registered_at": "2026-01-16T21:56:43.785626",
+    "assessment_completed": false,
+    "adaptive_answers": [],
+    "generated_questions": [
+      {
+        "id": "Q4",
+        "question": "What is your mother tongue, and do you have experience learning other languages?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q5",
+        "question": "Do you prefer practicing in a group or one-on-one with a language partner?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q6",
+        "question": "What is the most difficult part of language learning for you (e.g., grammar, speaking, listening)?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q7",
+        "question": "How many hours a week can you realistically spend on language exchange or practice?",
+        "type": "open_text"
+      }
+    ]
+  },
+  {
+    "user_id": "USER0018",
+    "name": "Tom",
+    "email": "tom2@example.com",
+    "phone": "+3 4563 56 756",
+    "country": "USA",
+    "location": "Wurzburg",
+    "age": "25",
+    "status": "Working",
+    "profession": "AI",
+    "languages": [
+      "English",
+      "German"
+    ],
+    "preferred_language": "English",
+    "goal": "language_assistance",
+    "registered_at": "2026-01-16T23:13:18.188526",
+    "assessment_completed": true,
+    "adaptive_answers": [
+      {
+        "question": "Which language do you want to improve, and what is your current approximate level?",
+        "answer": "I would like to improve my German level, my current A2 level"
+      },
+      {
+        "question": "What are your main goals? (e.g., passing an exam, daily conversation, professional/business communication)",
+        "answer": "I would like to practice conducting dialogues in German."
+      },
+      {
+        "question": "Do you prefer a formal tutoring style or casual conversation exchange with native speakers?",
+        "answer": "I prefer casual conversation exchange with native speakers"
+      },
+      {
+        "question": "What specific types of dialogues do you want to prioritize? (e.g., ordering food, making appointments, small talk with colleagues)",
+        "answer": "I like to talk about books or discuss the news."
+      },
+      {
+        "question": "What characteristics are important in your conversation partner? (e.g., age group, shared interests, regional German dialect)",
+        "answer": "I would like someone with the same interests."
+      },
+      {
+        "question": "How should cultural elements be incorporated? (e.g., discuss German traditions, slang, or media during conversations)",
+        "answer": "I'd like to discuss the local news."
+      },
+      {
+        "question": "When are your preferred times/days for practice sessions considering your work schedule?",
+        "answer": "It would be convenient for me in the evenings or on weekends."
+      }
+    ],
+    "generated_questions": [
+      {
+        "id": "Q4",
+        "question": "What specific types of dialogues do you want to prioritize? (e.g., ordering food, making appointments, small talk with colleagues)",
+        "type": "open_text"
+      },
+      {
+        "id": "Q5",
+        "question": "What characteristics are important in your conversation partner? (e.g., age group, shared interests, regional German dialect)",
+        "type": "open_text"
+      },
+      {
+        "id": "Q6",
+        "question": "How should cultural elements be incorporated? (e.g., discuss German traditions, slang, or media during conversations)",
+        "type": "open_text"
+      },
+      {
+        "id": "Q7",
+        "question": "When are your preferred times/days for practice sessions considering your work schedule?",
+        "type": "open_text"
+      }
+    ]
+  },
+  {
+    "user_id": "USER0019",
+    "name": "Jake",
+    "email": "jake@example.com",
+    "phone": "+3 4563 56 74",
+    "country": "Canada",
+    "location": "Wurzburg",
+    "age": "18",
+    "status": "Student",
+    "profession": "engineer",
+    "languages": [
+      "English",
+      "German"
+    ],
+    "preferred_language": "English",
+    "goal": "legal_support",
+    "registered_at": "2026-01-16T23:39:49.780155",
+    "assessment_completed": false,
+    "adaptive_answers": [],
+    "generated_questions": [
+      {
+        "id": "Q4",
+        "question": "Regarding university regulations, are you specifically concerned with academic policies (like grading appeals) or administrative procedures (enrollment/registration issues)?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q5",
+        "question": "For visa information, do you prefer resources focused on study permit renewals, work permits for students, or general compliance guidelines?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q6",
+        "question": "When seeking housing legal advice, do you prioritize understanding tenant rights, lease negotiation strategies, or dispute resolution methods?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q7",
+        "question": "What days/times work best for you to access legal resources given your student schedule?",
+        "type": "open_text"
+      }
+    ]
+  },
+  {
+    "user_id": "USER0020",
+    "name": "Tim",
+    "email": "tim@example.com",
+    "phone": "+3427682 256257",
+    "country": "USA",
+    "location": "Wurzburg",
+    "age": "23",
+    "status": "Student",
+    "profession": "AI",
+    "languages": [
+      "English",
+      "German"
+    ],
+    "preferred_language": "English",
+    "goal": "mental_health",
+    "registered_at": "2026-01-16T23:53:09.969755",
+    "assessment_completed": true,
+    "adaptive_answers": [
+      {
+        "question": "How have you been feeling lately? Are you looking for someone to talk to, or professional resources?",
+        "answer": "I just need someone to talk to."
+      },
+      {
+        "question": "What kind of support environment do you prefer? (e.g., One-on-one peer support, group sessions, or finding therapy options)",
+        "answer": "One-on-one peer support"
+      },
+      {
+        "question": "Are there specific topics or stressors you want to focus on or avoid in your conversations?",
+        "answer": "religion"
+      },
+      {
+        "question": "What specific feelings or challenges are you hoping to address through one-on-one peer support?",
+        "answer": "I feel lonely."
+      },
+      {
+        "question": "Do you prefer a peer supporter with similar life experiences (e.g., academic stress) or specific qualities to help you feel comfortable?",
+        "answer": "I prefer someone with similar interests."
+      },
+      {
+        "question": "What communication approach works best for you\u2014like structured guidance or free-flowing conversation\u2014when discussing mental health?",
+        "answer": "conversation"
+      },
+      {
+        "question": "How does your weekly schedule (classes/work) affect your availability for peer support sessions?",
+        "answer": "I can see a person every day."
+      }
+    ],
+    "generated_questions": [
+      {
+        "id": "Q4",
+        "question": "What specific feelings or challenges are you hoping to address through one-on-one peer support?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q5",
+        "question": "Do you prefer a peer supporter with similar life experiences (e.g., academic stress) or specific qualities to help you feel comfortable?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q6",
+        "question": "What communication approach works best for you\u2014like structured guidance or free-flowing conversation\u2014when discussing mental health?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q7",
+        "question": "How does your weekly schedule (classes/work) affect your availability for peer support sessions?",
+        "type": "open_text"
+      }
+    ],
+    "nlp_profile": {
+      "summary": "Tim is a 23-year-old AI student from the USA living in W\u00fcrzburg, feeling lonely and seeking daily one-on-one peer conversations for support. He prefers connecting over shared interests and wants to avoid religious topics entirely.",
+      "matching_summary": "Requires daily one-on-one peer support focused on casual conversation with individuals sharing similar interests.",
+      "preferences": [
+        "One-on-one peer support",
+        "Daily availability for sessions",
+        "Free-flowing conversation style",
+        "Peer supporters with similar interests"
+      ],
+      "constraints": [
+        "Avoid discussing religion",
+        "Not seeking professional therapy resources"
+      ],
+      "key_facts": [
+        "Student studying AI",
+        "Speaks English and German",
+        "Originally from USA, currently in W\u00fcrzburg",
+        "Primary goal: mental health support",
+        "Feels lonely"
+      ]
+    }
+  },
+  {
+    "user_id": "USER0021",
+    "name": "Tony ",
+    "email": "tony@example.com",
+    "phone": "+3 4563 56 756",
+    "country": "USA",
+    "location": "Wurzburg",
+    "age": "27",
+    "status": "Working",
+    "profession": "jurisprudence",
+    "languages": [
+      "English",
+      "German"
+    ],
+    "preferred_language": "English",
+    "goal": "provide_legal_support",
+    "registered_at": "2026-01-17T03:03:18.288548",
+    "assessment_completed": true,
+    "adaptive_answers": [
+      {
+        "question": "What specific areas of law or administration can you help with? (e.g., Uni regulations, Job contracts, Visa, Housing)",
+        "answer": "Uni regulations, Job contracts, Visa, Housing"
+      },
+      {
+        "question": "What is your background or experience? (e.g., Law student, professional lawyer, or personal experience with similar cases)",
+        "answer": "professional lawyer"
+      },
+      {
+        "question": "What is your availability, and do you prefer one-time consultations or ongoing mentorship?",
+        "answer": "one-time consultations"
+      },
+      {
+        "question": "What specific type of job contract are you seeking help with (e.g., termination, negotiation, new employment agreement)?",
+        "answer": "I am ready to help without a contract."
+      },
+      {
+        "question": "For your visa inquiries, are you looking for assistance with a specific visa category (e.g., work, student, family reunification)?",
+        "answer": "I don't need any help in applying for a visa."
+      },
+      {
+        "question": "Regarding housing, are you dealing with a specific issue like a lease dispute, landlord conflict, or finding new accommodation?",
+        "answer": "no"
+      },
+      {
+        "question": "What is your preferred method for one-time consultations (e.g., video call, phone, email) and what is your typical availability?",
+        "answer": "one-time consultations"
+      }
+    ],
+    "generated_questions": [
+      {
+        "id": "Q4",
+        "question": "What specific type of job contract are you seeking help with (e.g., termination, negotiation, new employment agreement)?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q5",
+        "question": "For your visa inquiries, are you looking for assistance with a specific visa category (e.g., work, student, family reunification)?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q6",
+        "question": "Regarding housing, are you dealing with a specific issue like a lease dispute, landlord conflict, or finding new accommodation?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q7",
+        "question": "What is your preferred method for one-time consultations (e.g., video call, phone, email) and what is your typical availability?",
+        "type": "open_text"
+      }
+    ],
+    "nlp_profile": {
+      "summary": "Tony is a 27-year-old professional lawyer from the USA, now living in Wurzburg, who offers one-time legal consultations in English and German. He specializes in providing support for university regulations, job contracts, and visa matters. His primary goal is to offer legal guidance without ongoing commitments.",
+      "matching_summary": "A professional lawyer in Wurzburg seeking one-time consultations to provide legal support for university regulations, job contracts, and visa inquiries.",
+      "preferences": [
+        "One-time consultations",
+        "Legal support for university regulations",
+        "Assistance with job contracts",
+        "Visa-related guidance",
+        "Communication in English or German"
+      ],
+      "constraints": [
+        "Not seeking help with personal visa applications",
+        "No interest in ongoing mentorship",
+        "Does not require a formal contract for assistance",
+        "Not dealing with housing issues"
+      ],
+      "key_facts": [
+        "Age: 27",
+        "Profession: Professional lawyer",
+        "Location: Wurzburg, Germany",
+        "Languages: English, German",
+        "Primary goal: Provide legal support"
+      ]
+    }
+  },
+  {
+    "user_id": "USER0022",
+    "name": "Anny",
+    "email": "anny@example.com",
+    "phone": "+3427682 2562577",
+    "country": "USA",
+    "location": "Wurzburg",
+    "age": "18",
+    "status": "Student",
+    "profession": "AI",
+    "languages": [
+      "English"
+    ],
+    "preferred_language": "English",
+    "goal": "legal_support",
+    "registered_at": "2026-01-17T03:08:28.901863",
+    "assessment_completed": true,
+    "adaptive_answers": [
+      {
+        "question": "What specific area do you need legal assistance with? (e.g., University regulations, Job/Work contracts, Migration/Visa, Housing)",
+        "answer": "University regulations and Visa"
+      },
+      {
+        "question": "Are you looking for general information/advice or do you have a specific active case or dispute?",
+        "answer": "general information"
+      },
+      {
+        "question": "How urgent is your situation, and what specific outcome are you hoping for?",
+        "answer": "My situation is not urgent, but I would like to get an answer as soon as possible."
+      },
+      {
+        "question": "What specific university regulations are you seeking information about (e.g., academic standing, disciplinary procedures, or enrollment status) and which visa type are you inquiring about (e.g., F-1, J-1, or OPT)?",
+        "answer": "I would like to know all the information."
+      },
+      {
+        "question": "Do you have any upcoming deadlines related to your university studies or visa application that influence your need for information?",
+        "answer": "no"
+      },
+      {
+        "question": "Are you looking for general guidance to navigate these topics independently, or would you prefer assistance in locating professional legal resources for consultation?",
+        "answer": "general guidance"
+      },
+      {
+        "question": "As a student, what is your preferred method for receiving this information (e.g., written guides, checklists, or direct contact with a resource)?",
+        "answer": "written guides"
+      }
+    ],
+    "generated_questions": [
+      {
+        "id": "Q4",
+        "question": "What specific university regulations are you seeking information about (e.g., academic standing, disciplinary procedures, or enrollment status) and which visa type are you inquiring about (e.g., F-1, J-1, or OPT)?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q5",
+        "question": "Do you have any upcoming deadlines related to your university studies or visa application that influence your need for information?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q6",
+        "question": "Are you looking for general guidance to navigate these topics independently, or would you prefer assistance in locating professional legal resources for consultation?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q7",
+        "question": "As a student, what is your preferred method for receiving this information (e.g., written guides, checklists, or direct contact with a resource)?",
+        "type": "open_text"
+      }
+    ],
+    "nlp_profile": {
+      "summary": "Anny is an 18-year-old AI student from the USA living in Wurzburg, seeking general guidance on university regulations and visa information. She prefers written guides and is looking for non-urgent but timely assistance to navigate her academic and immigration topics.",
+      "matching_summary": "An 18-year-old US student in Wurzburg needs general written guidance on university regulations and visa information.",
+      "preferences": [
+        "Written guides for information delivery",
+        "General guidance over direct legal consultation",
+        "Focus on university regulations and visa topics",
+        "Non-urgent but timely information access"
+      ],
+      "constraints": [
+        "No active legal cases or disputes",
+        "No specific visa type or university regulation focus",
+        "No upcoming deadlines influencing the need",
+        "Not seeking direct contact with legal professionals"
+      ],
+      "key_facts": [
+        "18-year-old AI student from the USA",
+        "Currently living in Wurzburg, Germany",
+        "Primary language is English",
+        "Seeking general information on university regulations and visas",
+        "Prefers written guides for receiving information"
+      ]
+    }
+  },
+  {
+    "user_id": "USER0023",
+    "name": "John",
+    "email": "john@example.com",
+    "phone": "+3427682 2562574",
+    "country": "USA",
+    "location": "Wurzburg",
+    "age": "24",
+    "status": "Student",
+    "profession": "AI",
+    "languages": [
+      "English"
+    ],
+    "preferred_language": "English",
+    "goal": "legal_support",
+    "registered_at": "2026-01-17T03:23:10.568174",
+    "assessment_completed": true,
+    "adaptive_answers": [
+      {
+        "question": "What specific area do you need legal assistance with? (e.g., University regulations, Job/Work contracts, Migration/Visa, Housing)",
+        "answer": "Visa"
+      },
+      {
+        "question": "Are you looking for general information/advice or do you have a specific active case or dispute?",
+        "answer": "general information"
+      },
+      {
+        "question": "How urgent is your situation, and what specific outcome are you hoping for?",
+        "answer": "urgently"
+      },
+      {
+        "question": "What specific type of visa are you applying for (e.g., student, work, tourist) and what is the country of destination?",
+        "answer": "student visa for Germany"
+      },
+      {
+        "question": "Are there any specific deadlines or time constraints you are facing for your visa application?",
+        "answer": "no deadlines"
+      },
+      {
+        "question": "Do you have any previous experience with immigration processes, or is this your first time applying for a visa?",
+        "answer": "no previous experience with immigration processes"
+      },
+      {
+        "question": "What is your current status in the USA (e.g., F-1 student visa, B-2 visitor) and when does your current status expire?",
+        "answer": "F-1 student visa"
+      }
+    ],
+    "generated_questions": [
+      {
+        "id": "Q4",
+        "question": "What specific type of visa are you applying for (e.g., student, work, tourist) and what is the country of destination?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q5",
+        "question": "Are there any specific deadlines or time constraints you are facing for your visa application?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q6",
+        "question": "Do you have any previous experience with immigration processes, or is this your first time applying for a visa?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q7",
+        "question": "What is your current status in the USA (e.g., F-1 student visa, B-2 visitor) and when does your current status expire?",
+        "type": "open_text"
+      }
+    ],
+    "nlp_profile": {
+      "summary": "John is a 24-year-old AI student from the USA currently living in W\u00fcrzburg, Germany. He urgently needs general information on obtaining a student visa for Germany, as he has no prior immigration experience and is currently on an F-1 visa in the US.",
+      "matching_summary": "A US-based AI student in Germany urgently seeking general advice for a German student visa application.",
+      "preferences": [
+        "Legal advice on student visa applications",
+        "General immigration information",
+        "Guidance for first-time visa applicants",
+        "Support for US-to-Germany transitions"
+      ],
+      "constraints": [
+        "No active legal disputes or cases",
+        "No specific deadlines for the visa application",
+        "Limited to English language communication"
+      ],
+      "key_facts": [
+        "Currently holds an F-1 student visa in the USA",
+        "Living in W\u00fcrzburg, Germany",
+        "Primary goal is legal support for visa matters",
+        "No previous experience with immigration processes",
+        "Urgently seeking visa information"
+      ]
+    }
+  },
+  {
+    "user_id": "USER0024",
+    "name": "Andrew",
+    "email": "andrew@example.com",
+    "phone": "+3 4563 56 744",
+    "country": "Russia",
+    "location": "Wurzburg",
+    "age": "30",
+    "status": "Working",
+    "profession": "engineer",
+    "languages": [
+      "English",
+      "Russian"
+    ],
+    "preferred_language": "English",
+    "goal": "mental_health",
+    "registered_at": "2026-01-17T03:27:43.764977",
+    "assessment_completed": true,
+    "adaptive_answers": [
+      {
+        "question": "How have you been feeling lately? Are you looking for someone to talk to, or professional resources?",
+        "answer": "just someone to talk to"
+      },
+      {
+        "question": "What kind of support environment do you prefer? (e.g., One-on-one peer support, group sessions, or finding therapy options)",
+        "answer": "One-on-one peer support"
+      },
+      {
+        "question": "Are there specific topics or stressors you want to focus on or avoid in your conversations?",
+        "answer": "my work"
+      },
+      {
+        "question": "What specific aspects of your work are causing you the most stress right now?",
+        "answer": "A large number of tasks"
+      },
+      {
+        "question": "How would you prefer to communicate with a peer supporter (e.g., text chat, voice call, video call)?",
+        "answer": "video call"
+      },
+      {
+        "question": "Are there any specific boundaries or topics related to your work that you would like to avoid discussing?",
+        "answer": "religion"
+      },
+      {
+        "question": "How much time can you realistically dedicate to peer support conversations each week?",
+        "answer": "10 hours"
+      }
+    ],
+    "generated_questions": [
+      {
+        "id": "Q4",
+        "question": "What specific aspects of your work are causing you the most stress right now?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q5",
+        "question": "How would you prefer to communicate with a peer supporter (e.g., text chat, voice call, video call)?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q6",
+        "question": "Are there any specific boundaries or topics related to your work that you would like to avoid discussing?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q7",
+        "question": "How much time can you realistically dedicate to peer support conversations each week?",
+        "type": "open_text"
+      }
+    ],
+    "nlp_profile": {
+      "summary": "Andrew is a 30-year-old Russian engineer living in Wurzburg, seeking one-on-one peer support to manage work-related stress. He prefers video calls and is looking for a supportive conversation to improve his mental health.",
+      "matching_summary": "Andrew is seeking a one-on-one peer supporter for weekly video calls to discuss work stress, with a preference for English or Russian communication.",
+      "preferences": [
+        "One-on-one peer support",
+        "Video call communication",
+        "Discussing work-related topics",
+        "English or Russian language",
+        "Dedicated time for conversations (10 hours/week)"
+      ],
+      "constraints": [
+        "Avoid discussing religion",
+        "Focus on work stressors (e.g., large number of tasks)",
+        "Not seeking professional therapy",
+        "Not interested in group sessions"
+      ],
+      "key_facts": [
+        "30-year-old engineer from Russia, living in Wurzburg",
+        "Primary goal is mental health support",
+        "Can dedicate 10 hours per week to peer support",
+        "Prefers video calls over text or voice",
+        "Speaks English and Russian"
       ]
     }
   }

@@ -75,6 +75,7 @@ class VectorDatabase:
             'metadata': {
                 'summary': nlp_profile.get('summary', ''),
                 'top_category': user_data.get('assessment_results', {}).get('top_category', ''),
+                'goal': user_data.get('goal', 'social_connection'),
                 'preferences': nlp_profile.get('preferences', [])[:5],
                 'constraints': nlp_profile.get('constraints', [])[:3],
                 'last_updated': datetime.now().isoformat()

@@ -13,71 +13,89 @@ client = OpenAI(
 
 
 class AdaptiveQuestionEngine:
-    def __init__(self, model="deepseek/deepseek-r1-0528:free"):
+    def __init__(self, model="xiaomi/mimo-v2-flash:free"):
         self.model = model
         self.total_questions = 7 
         
-        self.fixed_questions = [
-            {
-                'id': 'Q1',
-                'question': "Tell me about your hobbies and interests. What do you enjoy doing in your free time?",
-                'type': 'open_text'
-            },
-            {
-                'id': 'Q2',
-                'question': "Are there any activities, topics, or social situations you definitely want to avoid? This helps us find compatible matches.",
-                'type': 'open_text'
-            },
-            {
-                'id': 'Q3',
-                'question': "How often are you available to meet new people? What times work best for you (weekdays/weekends, mornings/evenings)?",
-                'type': 'open_text'
-            }
-        ]
+
+        self.category_questions = {
+            'social_connection': [
+                {'id': 'Q1', 'question': "Tell me about your hobbies and interests. What do you enjoy doing in your free time?", 'type': 'open_text'},
+                {'id': 'Q2', 'question': "Are there any activities, topics, or social situations you definitely want to avoid?", 'type': 'open_text'},
+                {'id': 'Q3', 'question': "How often are you available to meet new people? What times work best for you?", 'type': 'open_text'}
+            ],
+            'legal_support': [
+                {'id': 'Q1', 'question': "What specific area do you need legal assistance with? (e.g., University regulations, Job/Work contracts, Migration/Visa, Housing)", 'type': 'open_text'},
+                {'id': 'Q2', 'question': "Are you looking for general information/advice or do you have a specific active case or dispute?", 'type': 'open_text'},
+                {'id': 'Q3', 'question': "How urgent is your situation, and what specific outcome are you hoping for?", 'type': 'open_text'}
+            ],
+            'mental_health': [
+                {'id': 'Q1', 'question': "How have you been feeling lately? Are you looking for someone to talk to, or professional resources?", 'type': 'open_text'},
+                {'id': 'Q2', 'question': "What kind of support environment do you prefer? (e.g., One-on-one peer support, group sessions, or finding therapy options)", 'type': 'open_text'},
+                {'id': 'Q3', 'question': "Are there specific topics or stressors you want to focus on or avoid in your conversations?", 'type': 'open_text'}
+            ],
+            'language_assistance': [
+                {'id': 'Q1', 'question': "Which language do you want to improve, and what is your current approximate level?", 'type': 'open_text'},
+                {'id': 'Q2', 'question': "What are your main goals? (e.g., passing an exam, daily conversation, professional/business communication)", 'type': 'open_text'},
+                {'id': 'Q3', 'question': "Do you prefer a formal tutoring style or casual conversation exchange with native speakers?", 'type': 'open_text'}
+            ],
+            'provide_legal_support': [
+                {'id': 'Q1', 'question': "What specific areas of law or administration can you help with? (e.g., Uni regulations, Job contracts, Visa, Housing)", 'type': 'open_text'},
+                {'id': 'Q2', 'question': "What is your background or experience? (e.g., Law student, professional lawyer, or personal experience with similar cases)", 'type': 'open_text'},
+                {'id': 'Q3', 'question': "What is your availability, and do you prefer one-time consultations or ongoing mentorship?", 'type': 'open_text'}
+            ]
+        }
+
+    def _get_fixed_questions(self, goal: str) -> List[Dict]:
+        return self.category_questions.get(goal, self.category_questions['social_connection'])
     
     def get_first_question(self, user_data: Dict) -> Dict:
-        return self.fixed_questions[0]
+        goal = user_data.get('goal', 'social_connection')
+        return self._get_fixed_questions(goal)[0]
     
     def get_next_question(self, user_data: Dict, previous_answers: List[Dict]) -> Optional[Dict]:
         question_num = len(previous_answers) + 1
+        goal = user_data.get('goal', 'social_connection')
+        fixed_questions = self._get_fixed_questions(goal)
         
         if question_num > self.total_questions:
             return None
         
         if question_num <= 3:
-            return self.fixed_questions[question_num - 1]
+            return fixed_questions[question_num - 1]
 
-        return self.generate_next_question(user_data, previous_answers)
-    
+        fallbacks = self._get_fallback_questions_batch(user_data)
+        if 4 <= question_num <= 7:
+            return fallbacks[question_num - 4]
+        return None
+
     def generate_remaining_questions(self, user_data: Dict, previous_answers: List[Dict]) -> List[Dict]:
         context = self._build_context(user_data, previous_answers)
+        goal = user_data.get('goal', 'social_connection').replace('_', ' ')
         
         prompt = f"""{context}
+- Primary Goal: {goal}
 
-TASK: Based on the 3 answers above, generate exactly 4 follow-up questions (Q4, Q5, Q6, Q7).
+TASK: Based on the 3 answers and the user's primary goal ({goal}) above, generate exactly 4 follow-up questions (Q4, Q5, Q6, Q7).
 
 These questions MUST:
-1. Dig deeper into SPECIFIC interests they mentioned (e.g., if they said "reading", ask what genres)
-2. Ask about their preferred social settings and group sizes
-3. Explore what they value in friendships
-4. Identify lifestyle details that affect compatibility
+1. Dig deeper into SPECIFIC details they mentioned in their first 3 answers.
+2. Be highly relevant to their primary goal ({goal}).
+3. Explore their specific needs, preferences, or constraints related to this goal.
+4. Help find the best matches or resources for them.
 
-BE SPECIFIC based on their answers. If they mentioned reading, ask about genres. If they mentioned movies, ask about types of movies.
+BE SPECIFIC based on their answers. 
+- If their goal is Language Assistance, ask about specific learning methods or obstacles.
+- If their goal is Legal Support, ask about their specific situation (deadlines, documents, etc).
+- If their goal is Mental Health, ask about their preferred type of interaction or specific stressors mentioned.
+- If their goal is Social Connection, explore hobby-specific details and social style.
 
 Format EXACTLY like this (no extra text):
-Q4: [specific question about their hobby/interest]
-Q5: [question about social preferences]
-Q6: [question about values in friendship]
-Q7: [question about lifestyle/dietary/schedule details]
-
-Example based on "I like reading and watching movies":
-Q4: What genres of books and movies do you enjoy most - fiction, documentaries, thrillers, or something else?
-Q5: Do you prefer discussing books and movies one-on-one, in small groups, or larger book clubs?
-Q6: What qualities do you value most in people you connect with?
-Q7: Are there any dietary preferences or schedules we should know about for planning meetups?
-
-NOW generate 4 questions for THIS person:"""
-
+Q4: [specific question]
+Q5: [question about preferences]
+Q6: [question about values/style]
+Q7: [question about lifestyle/schedule]
+"""
         try:
             response = client.chat.completions.create(
                 model=self.model,
@@ -89,60 +107,74 @@ NOW generate 4 questions for THIS person:"""
                 temperature=0.7
             )
             
-            result = response.choices[0].message.content.strip()
-            print(f"\n=== LLM Raw Response ===\n{result}\n")
-            
+            if not hasattr(response, 'choices') or not response.choices:
+                print(f"Error: OpenAI response missing choices: {response}")
+                return self._get_fallback_questions_batch(user_data)
+
+            result = response.choices[0].message.content
+            if not result:
+                return self._get_fallback_questions_batch(user_data)
+                
+            result = result.strip()
             import re
             result = re.sub(r'<think>.*?</think>', '', result, flags=re.DOTALL).strip()
 
             questions = []
-            lines = result.split('\n')
-            
-            for line in lines:
+            for line in result.split('\n'):
                 line = line.strip()
-                if line.startswith('Q4:') or line.startswith('Q4.') or line.lower().startswith('q4:'):
-                    q_text = line[3:].strip() if ':' in line[:4] else line[3:].strip()
-                    questions.append({'id': 'Q4', 'question': q_text, 'type': 'open_text'})
-                elif line.startswith('Q5:') or line.startswith('Q5.') or line.lower().startswith('q5:'):
-                    q_text = line[3:].strip() if ':' in line[:4] else line[3:].strip()
-                    questions.append({'id': 'Q5', 'question': q_text, 'type': 'open_text'})
-                elif line.startswith('Q6:') or line.startswith('Q6.') or line.lower().startswith('q6:'):
-                    q_text = line[3:].strip() if ':' in line[:4] else line[3:].strip()
-                    questions.append({'id': 'Q6', 'question': q_text, 'type': 'open_text'})
-                elif line.startswith('Q7:') or line.startswith('Q7.') or line.lower().startswith('q7:'):
-                    q_text = line[3:].strip() if ':' in line[:4] else line[3:].strip()
-                    questions.append({'id': 'Q7', 'question': q_text, 'type': 'open_text'})
+                match = re.match(r'Q([4-7])[:.\s]+(.+)', line, re.IGNORECASE)
+                if match:
+                    q_id = f"Q{match.group(1)}"
+                    q_text = match.group(2).strip()
+                    questions.append({'id': q_id, 'question': q_text, 'type': 'open_text'})
             
             if len(questions) == 4:
-                print(f"✓ Successfully generated 4 personalized questions")
-                for q in questions:
-                    print(f"  {q['id']}: {q['question'][:60]}...")
                 return questions
-            else:
-                print(f"Warning: Expected 4 questions, got {len(questions)} - using fallback")
-                return self._get_fallback_questions_batch()
+            
+            print(f"Warning: Expected 4 questions, got {len(questions)} - using fallback")
+            return self._get_fallback_questions_batch(user_data)
                 
         except Exception as e:
-            print(f"Error generating batch questions: {e}")
-            return self._get_fallback_questions_batch()
-    
-    def _get_fallback_questions_batch(self) -> List[Dict]:
-        return [
-            {'id': 'Q4', 'question': 'What specific activities or hobbies would you like to do with new friends?', 'type': 'open_text'},
-            {'id': 'Q5', 'question': 'Do you prefer one-on-one conversations, small groups of 3-5, or larger social gatherings?', 'type': 'open_text'},
-            {'id': 'Q6', 'question': 'What do you value most in friendships - shared interests, similar values, or complementary personalities?', 'type': 'open_text'},
-            {'id': 'Q7', 'question': 'Is there anything else about your lifestyle or preferences that would help us find good matches for you?', 'type': 'open_text'}
-        ]
-    
-    def generate_next_question(self, user_data: Dict, previous_answers: List[Dict]) -> Optional[Dict]:
-        question_num = len(previous_answers) + 1
+            print(f"Error generating LLM questions: {e}")
+            return self._get_fallback_questions_batch(user_data)
+
+    def _get_fallback_questions_batch(self, user_data: Dict) -> List[Dict]:
+        goal = user_data.get('goal', 'social_connection')
         
-        fallback_questions = self._get_fallback_questions_batch()
-        if question_num >= 4 and question_num <= 7:
-            return fallback_questions[question_num - 4]
-        
-        return None
-    
+        fallbacks = {
+            'legal_support': [
+                {'id': 'Q4', 'question': 'Are there any specific documents you already have or need help preparing?', 'type': 'open_text'},
+                {'id': 'Q5', 'question': 'Have you already consulted with any other offices or organizations regarding this matter?', 'type': 'open_text'},
+                {'id': 'Q6', 'question': 'What is your preferred way of receiving help: a one-time consultation or ongoing support?', 'type': 'open_text'},
+                {'id': 'Q7', 'question': 'Are there any specific deadlines we should be aware of for your case?', 'type': 'open_text'}
+            ],
+            'mental_health': [
+                {'id': 'Q4', 'question': 'What specific methods do you usually find helpful for managing stress or difficult emotions?', 'type': 'open_text'},
+                {'id': 'Q5', 'question': 'Are you looking for support from people who have had similar experiences (peer support)?', 'type': 'open_text'},
+                {'id': 'Q6', 'question': 'How much time per week are you willing to dedicate to these supportive conversations?', 'type': 'open_text'},
+                {'id': 'Q7', 'question': 'Are there any particular times of day when you feel you need more support than usual?', 'type': 'open_text'}
+            ],
+            'language_assistance': [
+                {'id': 'Q4', 'question': 'What is your mother tongue, and do you have experience learning other languages?', 'type': 'open_text'},
+                {'id': 'Q5', 'question': 'Do you prefer practicing in a group or one-on-one with a language partner?', 'type': 'open_text'},
+                {'id': 'Q6', 'question': 'What is the most difficult part of language learning for you (e.g., grammar, speaking, listening)?', 'type': 'open_text'},
+                {'id': 'Q7', 'question': 'How many hours a week can you realistically spend on language exchange or practice?', 'type': 'open_text'}
+            ],
+            'social_connection': [
+                {'id': 'Q4', 'question': 'What specific activities or hobbies would you like to do with new friends?', 'type': 'open_text'},
+                {'id': 'Q5', 'question': 'Do you prefer one-on-one conversations, small groups of 3-5, or larger social gatherings?', 'type': 'open_text'},
+                {'id': 'Q6', 'question': 'How often do you like to meet up with friends?', 'type': 'open_text'},
+                {'id': 'Q7', 'question': 'What is your preferred social environment (loud/city/active or quiet/nature/relaxed)?', 'type': 'open_text'}
+            ],
+            'provide_legal_support': [
+                {'id': 'Q4', 'question': 'Have you ever represented anyone or provided written legal advice before?', 'type': 'open_text'},
+                {'id': 'Q5', 'question': 'Are you comfortable explaining complex legal terms in simpler language?', 'type': 'open_text'},
+                {'id': 'Q6', 'question': 'What languages are you most comfortable using when discussing legal matters?', 'type': 'open_text'},
+                {'id': 'Q7', 'question': 'Are there any types of cases or situations you would NOT be comfortable helping with?', 'type': 'open_text'}
+            ]
+        }
+        return fallbacks.get(goal, fallbacks['social_connection'])
+
     def _build_context(self, user_data: Dict, previous_answers: List[Dict]) -> str:
         context = f"""User Profile:
 - Name: {user_data.get('name', 'User')}
@@ -151,132 +183,60 @@ NOW generate 4 questions for THIS person:"""
 - Languages: {', '.join(user_data.get('languages', []))}
 
 Conversation so far:"""
-        
         for qa in previous_answers:
             context += f"\nQ: {qa['question']}\nA: {qa['answer']}\n"
-        
         return context
-    
-    def _get_fallback_question(self, question_num: int, previous_answers: List[Dict]) -> Dict:
-        fallback_questions = [
-            "How would you describe your social style? Do you prefer one-on-one hangouts, small groups, or larger gatherings?",
-            "Are there any specific activities or topics you're NOT interested in? This helps us avoid mismatches.",
-            "Tell me about your schedule and availability. How often would you like to meet up with new connections?",
-            "What's most important to you in friendships? What qualities do you value in the people you spend time with?",
-            "Is there anything else about your lifestyle, preferences, or interests that would help us find your best matches?"
-        ]
-        
-        idx = min(question_num - 1, len(fallback_questions) - 1)
-        
-        return {
-            'id': f'Q{question_num}',
-            'question': fallback_questions[idx],
-            'type': 'open_text'
-        }
-    
+
     def extract_insights_for_matching(self, all_answers: List[Dict]) -> Dict:
-        conversation = "\n\n".join([
-            f"Question: {qa['question']}\nAnswer: {qa['answer']}"
-            for qa in all_answers
-        ])
-        
-        prompt = f"""Below is a dialog with a user looking for new friends and connections in the city.
-
-{conversation}
-
-TASK: Based on these answers, extract key information for matching compatible people.
-
-Analyze the answers and highlight:
-
-1. PREFERENCES (what is important, what they like, interests):
-   - Hobbies and interests
-   - Preferred activities
-   - What they are looking for in friends/connections
-   - Lifestyle
-
-2. CONSTRAINTS (what does NOT fit, what they avoid):
-   - Things they DISLIKE
-   - Places/activities they avoid
-   - Deal-breakers (e.g. no alcohol, dislike noisy places)
-
-3. KEY_FACTS (important facts about personality and lifestyle):
-   - Personality traits (introvert/extrovert, active/calm)
-   - Schedule/availability
-   - Lifestyle features
-
-Output format (STRICTLY):
-PREFERENCES:
-- [preference 1]
-- [preference 2]
-- [preference 3]
-...
-
-CONSTRAINTS:
-- [constraint 1]
-- [constraint 2]
-...
-
-KEY_FACTS:
-- [fact 1]
-- [fact 2]
-- [fact 3]
-...
-
-Write concisely and specifically. Use a dash list format."""
-
+        conversation = "\n\n".join([f"Q: {qa['question']}\nA: {qa['answer']}" for qa in all_answers])
+        prompt = f"""Conversation:\n{conversation}\n\nTASK: Extract PREFERENCES, CONSTRAINTS, and KEY_FACTS for matching. Use dash list format."""
         try:
             response = client.chat.completions.create(
                 model=self.model,
-                messages=[
-                    {"role": "system", "content": "You are an expert in text analysis and extracting key information about people."},
-                    {"role": "user", "content": prompt}
-                ],
-                max_tokens=500,
-                temperature=0.3
+                messages=[{"role": "system", "content": "Extract matchmaking insights."}, {"role": "user", "content": prompt}],
+                max_tokens=500
             )
-            
-            result = response.choices[0].message.content.strip()
-            print(f"\n=== Extracted insights ===\n{result}\n")
-            return self._parse_extraction_result(result)
-            
+            if not hasattr(response, 'choices') or not response.choices:
+                return {'preferences': [], 'constraints': [], 'key_facts': []}
+                
+            result = response.choices[0].message.content
+            if not result:
+                return {'preferences': [], 'constraints': [], 'key_facts': []}
+                
+            return self._parse_extraction_result(result.strip())
         except Exception as e:
             print(f"Error extracting insights: {e}")
-            import traceback
-            traceback.print_exc()
-            return {
-                'preferences': [],
-                'constraints': [],
-                'key_facts': []
-            }
-    
+            return {'preferences': [], 'constraints': [], 'key_facts': []}
+
     def _parse_extraction_result(self, result: str) -> Dict:
-        insights = {
-            'preferences': [],
-            'constraints': [],
-            'key_facts': []
-        }
-        
-        current_section = None
+        import re
+        res = {'preferences': [], 'constraints': [], 'key_facts': []}
+        curr = None
         
         for line in result.split('\n'):
-            line = line.strip()
+            line_str = line.strip()
+            if not line_str:
+                continue
             
-            if 'PREFERENCES:' in line:
-                current_section = 'preferences'
-            elif 'CONSTRAINTS:' in line:
-                current_section = 'constraints'
-            elif 'KEY_FACTS:' in line:
-                current_section = 'key_facts'
-            elif line.startswith('-') and current_section:
-                item = line[1:].strip()
-                if item:
-                    if current_section == 'preferences':
-                        item = item[0].lower() + item[1:] 
-                    
-                    insights[current_section].append(item)
+            upper_line = line_str.upper()
+            if 'PREFERENCES' in upper_line:
+                curr = 'preferences'
+                continue
+            elif 'CONSTRAINTS' in upper_line:
+                curr = 'constraints'
+                continue
+            elif 'KEY_FACTS' in upper_line:
+                curr = 'key_facts'
+                continue
+            
+            if line_str.startswith('-') and curr:
+                content = line_str[1:].strip()
+                content = re.sub(r'^\s*\*\*.*?\*\*[:\-]?\s*', '', content, flags=re.IGNORECASE)
+                
+                if content:
+                    res[curr].append(content.strip())
         
-        return insights
-
+        return res
 
 def get_next_adaptive_question(user_data: Dict, previous_answers: List[Dict]) -> Optional[Dict]:
     engine = AdaptiveQuestionEngine()
@@ -284,9 +244,4 @@ def get_next_adaptive_question(user_data: Dict, previous_answers: List[Dict]) ->
     if not previous_answers:
         return engine.get_first_question(user_data)
     else:
-        return engine.generate_next_question(user_data, previous_answers)
-
-
-if __name__ == "__main__":
-    print("Adaptive Question Engine loaded successfully!")
-    print("This engine generates intelligent follow-up questions based on user responses.")
+        return engine.get_next_question(user_data, previous_answers)
