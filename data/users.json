@@ -554,7 +554,7 @@
       "German"
     ],
     "preferred_language": "English",
-    "goal": "language_assistance",
+    "goal": "language_support",
     "registered_at": "2026-01-16T21:56:43.785626",
     "assessment_completed": false,
     "adaptive_answers": [],
@@ -596,7 +596,7 @@
       "German"
     ],
     "preferred_language": "English",
-    "goal": "language_assistance",
+    "goal": "language_support",
     "registered_at": "2026-01-16T23:13:18.188526",
     "assessment_completed": true,
     "adaptive_answers": [
@@ -709,7 +709,7 @@
       "German"
     ],
     "preferred_language": "English",
-    "goal": "mental_health",
+    "goal": "mental_support",
     "registered_at": "2026-01-16T23:53:09.969755",
     "assessment_completed": true,
     "adaptive_answers": [
@@ -801,7 +801,7 @@
       "German"
     ],
     "preferred_language": "English",
-    "goal": "provide_legal_support",
+    "goal": "legal_support_volunteers",
     "registered_at": "2026-01-17T03:03:18.288548",
     "assessment_completed": true,
     "adaptive_answers": [
@@ -1081,7 +1081,7 @@
       "Russian"
     ],
     "preferred_language": "English",
-    "goal": "mental_health",
+    "goal": "mental_support",
     "registered_at": "2026-01-17T03:27:43.764977",
     "assessment_completed": true,
     "adaptive_answers": [
@@ -1158,6 +1158,283 @@
         "Can dedicate 10 hours per week to peer support",
         "Prefers video calls over text or voice",
         "Speaks English and Russian"
+      ]
+    }
+  },
+  {
+    "user_id": "USER0025",
+    "name": "Tomy",
+    "email": "tomy@example.com",
+    "phone": "345676",
+    "country": "USA",
+    "location": "Wurzburg",
+    "age": "21",
+    "status": "Student",
+    "profession": "AI",
+    "languages": [
+      "English",
+      "German"
+    ],
+    "preferred_language": "English",
+    "goal": "mental_support_volunteers",
+    "registered_at": "2026-01-17T15:51:10.454340",
+    "assessment_completed": true,
+    "adaptive_answers": [
+      {
+        "question": "Why would you like to provide mental support to others?",
+        "answer": "I would like to help people not feel lonely."
+      },
+      {
+        "question": "What is your background or experience in providing support? (e.g., Psychology student, trained listener, or lived experience)",
+        "answer": "Psychology student"
+      },
+      {
+        "question": "How much time per week can you dedicate to supporting others, and what times are you usually available?",
+        "answer": "I'm free every day in the evenings."
+      },
+      {
+        "question": "What specific mental health topics or challenges (e.g., academic stress, anxiety, loneliness) do you feel most prepared to address as a psychology student?",
+        "answer": "academic stress and loneliness"
+      },
+      {
+        "question": "Do you prefer providing support through text-based conversations, voice calls, or video calls, and why?",
+        "answer": "text-based conversations, voice calls, or video calls"
+      },
+      {
+        "question": "What approach or values guide your interactions when offering mental support (e.g., empathy, active listening, solution-focused)?",
+        "answer": "empathy"
+      },
+      {
+        "question": "Since you're available every evening, how many hours per evening could you consistently dedicate, and are there any days you'd prefer to avoid?",
+        "answer": "two hours"
+      }
+    ],
+    "generated_questions": [
+      {
+        "id": "Q4",
+        "question": "What specific mental health topics or challenges (e.g., academic stress, anxiety, loneliness) do you feel most prepared to address as a psychology student?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q5",
+        "question": "Do you prefer providing support through text-based conversations, voice calls, or video calls, and why?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q6",
+        "question": "What approach or values guide your interactions when offering mental support (e.g., empathy, active listening, solution-focused)?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q7",
+        "question": "Since you're available every evening, how many hours per evening could you consistently dedicate, and are there any days you'd prefer to avoid?",
+        "type": "open_text"
+      }
+    ],
+    "nlp_profile": {
+      "summary": "Tomy is a 21-year-old psychology student and AI professional from the USA, currently living in Wurzburg. He is passionate about combating loneliness and academic stress by offering mental support to others.",
+      "matching_summary": "Tomy is a psychology student seeking to provide mental support, available for two hours every evening via text, voice, or video calls.",
+      "preferences": [
+        "Empathy-driven approach",
+        "Addressing academic stress and loneliness",
+        "Text-based, voice, or video conversations",
+        "Evening availability"
+      ],
+      "constraints": [
+        "Limited to two hours per day",
+        "Available only in the evenings",
+        "Focus on psychology student-level support, not professional therapy"
+      ],
+      "key_facts": [
+        "Age: 21",
+        "Profession: AI and Psychology Student",
+        "Location: Wurzburg, Germany (from USA)",
+        "Languages: English, German",
+        "Availability: Every evening for 2 hours"
+      ]
+    }
+  },
+  {
+    "user_id": "USER0026",
+    "name": "Kot",
+    "email": "KK3@example.com",
+    "phone": "+1 2341 23 89",
+    "country": "USA",
+    "location": "Wurzburg",
+    "age": "32",
+    "status": "Student",
+    "profession": "AI",
+    "languages": [
+      "English",
+      "German"
+    ],
+    "preferred_language": "English",
+    "goal": "language_support_volunteers",
+    "registered_at": "2026-01-17T15:57:26.429022",
+    "assessment_completed": true,
+    "adaptive_answers": [
+      {
+        "question": "Which languages can you help with, and what is your level of proficiency? (e.g., Native speaker, C1/C2)",
+        "answer": "English native speaker"
+      },
+      {
+        "question": "Do you have any previous experience in teaching languages or facilitating language exchanges?",
+        "answer": "no"
+      },
+      {
+        "question": "What is your preferred method of helping? (e.g., informal chats, structured lessons, or correcting written work)",
+        "answer": "informal chats, structured lessons, or correcting written work"
+      },
+      {
+        "question": "Since you're a native English speaker with German skills, what specific aspects of German (e.g., conversational fluency, grammar, professional vocabulary) do you want to focus on in your language exchange?",
+        "answer": "onversational fluency, grammar, professional vocabulary"
+      },
+      {
+        "question": "How do you envision the balance between informal chats and structured lessons in your sessions, and are there specific topics you'd prefer for each?",
+        "answer": "books"
+      },
+      {
+        "question": "What are your biggest obstacles in learning German right now (e.g., pronunciation, lack of practice partners, complex grammar), and how could a volunteer best help address them?",
+        "answer": "pronunciation"
+      },
+      {
+        "question": "What is your weekly availability for language practice, and do you have a preferred platform or time zone (e.g., EST evenings, weekend mornings)?",
+        "answer": "evenings"
+      }
+    ],
+    "generated_questions": [
+      {
+        "id": "Q4",
+        "question": "Since you're a native English speaker with German skills, what specific aspects of German (e.g., conversational fluency, grammar, professional vocabulary) do you want to focus on in your language exchange?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q5",
+        "question": "How do you envision the balance between informal chats and structured lessons in your sessions, and are there specific topics you'd prefer for each?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q6",
+        "question": "What are your biggest obstacles in learning German right now (e.g., pronunciation, lack of practice partners, complex grammar), and how could a volunteer best help address them?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q7",
+        "question": "What is your weekly availability for language practice, and do you have a preferred platform or time zone (e.g., EST evenings, weekend mornings)?",
+        "type": "open_text"
+      }
+    ],
+    "nlp_profile": {
+      "summary": "Kot is a 32-year-old AI student from the USA living in Wurzburg, seeking language support volunteers to improve his German. As a native English speaker, he offers informal chats, structured lessons, or written corrections in exchange for help with conversational fluency, grammar, and professional vocabulary. He is available in the evenings and specifically wants to focus on pronunciation.",
+      "matching_summary": "A native English speaker and AI student in Wurzburg seeks a volunteer for German language exchange, focusing on conversational fluency, grammar, and professional vocabulary during evening sessions.",
+      "preferences": [
+        "Informal chats, structured lessons, or correcting written work",
+        "Focus on conversational fluency, grammar, and professional vocabulary",
+        "Evening availability",
+        "Topics related to books",
+        "Platform for practice (unspecified)"
+      ],
+      "constraints": [
+        "No previous teaching or language exchange experience",
+        "Specific focus on pronunciation obstacles",
+        "Limited to English (native) and German (learning) languages"
+      ],
+      "key_facts": [
+        "32-year-old AI student from the USA, living in Wurzburg",
+        "Native English speaker seeking German language support",
+        "Primary goal is language support volunteers",
+        "Available for practice in the evenings",
+        "Wants to address pronunciation challenges in German"
+      ]
+    }
+  },
+  {
+    "user_id": "USER0027",
+    "name": "Tommy",
+    "email": "tommy@example.com",
+    "phone": "+3427682 25625775",
+    "country": "USA",
+    "location": "Wurzburg",
+    "age": "21",
+    "status": "Working",
+    "profession": "AI",
+    "languages": [
+      "English"
+    ],
+    "preferred_language": "English",
+    "goal": "social_connection",
+    "registered_at": "2026-01-17T16:09:43.997163",
+    "assessment_completed": true,
+    "adaptive_answers": [
+      {
+        "question": "Tell me about your hobbies and interests. What do you enjoy doing in your free time?",
+        "answer": "books"
+      },
+      {
+        "question": "Are there any activities, topics, or social situations you definitely want to avoid?",
+        "answer": "religion"
+      },
+      {
+        "question": "How often are you available to meet new people? What times work best for you?",
+        "answer": "every day"
+      },
+      {
+        "question": "What genres of books do you enjoy most, and would you be interested in joining a book club or a reading group to discuss them?",
+        "answer": "fantasy"
+      },
+      {
+        "question": "Are there any specific types of social settings you prefer for meeting people, like quiet cafes, large events, or small group activities?",
+        "answer": "small group activities"
+      },
+      {
+        "question": "When you meet new people, do you prefer deep, one-on-one conversations or more casual, group-based interactions?",
+        "answer": "one-on-one conversations"
+      },
+      {
+        "question": "Since you're available every day, do you have a preferred time of day (like evenings or weekends) for social activities, or is your schedule flexible?",
+        "answer": "evenings or weekends"
+      }
+    ],
+    "generated_questions": [
+      {
+        "id": "Q4",
+        "question": "What genres of books do you enjoy most, and would you be interested in joining a book club or a reading group to discuss them?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q5",
+        "question": "Are there any specific types of social settings you prefer for meeting people, like quiet cafes, large events, or small group activities?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q6",
+        "question": "When you meet new people, do you prefer deep, one-on-one conversations or more casual, group-based interactions?",
+        "type": "open_text"
+      },
+      {
+        "id": "Q7",
+        "question": "Since you're available every day, do you have a preferred time of day (like evenings or weekends) for social activities, or is your schedule flexible?",
+        "type": "open_text"
+      }
+    ],
+    "nlp_profile": {
+      "summary": "Tommy is a 21-year-old AI professional from the USA, now living in W\u00fcrzburg, who is looking to build social connections. He enjoys fantasy books and prefers intimate, one-on-one conversations in small group settings during evenings or weekends.",
+      "matching_summary": "A fantasy book enthusiast seeking one-on-one connections in small groups, available daily in the evenings or weekends.",
+      "preferences": [
+        "Fantasy books",
+        "Small group activities",
+        "One-on-one conversations",
+        "Evening or weekend meetups"
+      ],
+      "constraints": [
+        "Religion"
+      ],
+      "key_facts": [
+        "Age 21, from USA, living in W\u00fcrzburg",
+        "Works in the AI field",
+        "Primary goal is social connection",
+        "Speaks English",
+        "Available to meet every day"
       ]
     }
   }

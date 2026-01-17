@@ -176,15 +176,19 @@ ADAPTIVE_QUESTIONS_TEMPLATE = """
         const userId = new URLSearchParams(window.location.search).get('user_id');
         let currentQuestion = null;
         let allAnswers = [];
+        let questionHistory = []; 
         let maxQuestions = 7;
 
         document.getElementById('answerInput').addEventListener('input', function() {
             const count = this.value.length;
             document.getElementById('charCount').textContent = count;
-            document.getElementById('nextBtn').disabled = false; // Always enabled
+            document.getElementById('nextBtn').disabled = count === 0;
         });
 
         async function loadFirstQuestion() {
+            document.getElementById('questionCard').style.display = 'none';
+            document.getElementById('loadingDiv').style.display = 'block';
+            
             try {
                 const response = await fetch('/api/get-first-question', {
                     method: 'POST',
@@ -193,8 +197,12 @@ ADAPTIVE_QUESTIONS_TEMPLATE = """
                 });
 
                 const data = await response.json();
+                document.getElementById('loadingDiv').style.display = 'none';
+                document.getElementById('questionCard').style.display = 'block';
+                
                 if (data.question) {
-                    displayQuestion(data.question);
+                    questionHistory[0] = data.question;
+                    displayQuestion(data.question, 0);
                 }
             } catch (error) {
                 console.error('Error loading question:', error);
@@ -202,47 +210,59 @@ ADAPTIVE_QUESTIONS_TEMPLATE = """
             }
         }
 
-        function displayQuestion(question) {
+        function displayQuestion(question, index) {
             currentQuestion = question;
             document.getElementById('questionText').textContent = question.question;
-            document.getElementById('answerInput').value = '';
-            document.getElementById('charCount').textContent = '0';
-            document.getElementById('nextBtn').disabled = true;
             
-            updateProgress();
+            const existingAnswer = allAnswers[index] ? allAnswers[index].answer : '';
+            document.getElementById('answerInput').value = existingAnswer;
+            document.getElementById('charCount').textContent = existingAnswer.length;
+            document.getElementById('nextBtn').disabled = existingAnswer.length === 0;
+            
+            updateProgress(index);
             document.getElementById('answerInput').focus();
         }
 
-        function updateProgress() {
-            const questionNum = allAnswers.length + 1;
+        function updateProgress(index) {
+            const questionNum = index + 1;
             const progress = (questionNum / maxQuestions) * 100;
             
             document.getElementById('progressFill').style.width = progress + '%';
             document.getElementById('progressText').textContent = `Question ${questionNum} of ${maxQuestions}`;
             document.getElementById('questionHeader').textContent = `QUESTION ${questionNum}`;
-            document.getElementById('backBtn').disabled = allAnswers.length === 0;
+            document.getElementById('backBtn').disabled = index === 0;
         }
 
         async function goNext() {
             const answer = document.getElementById('answerInput').value.trim();
+            const currentIndex = allAnswers.length;
             
             if (answer.length === 0) {
                 alert('Please provide an answer');
                 return;
             }
 
-            allAnswers.push({
+            allAnswers[currentIndex] = {
                 question: currentQuestion.question,
                 answer: answer
-            });
+            };
 
             if (allAnswers.length >= maxQuestions) {
                 await finishQuestions();
                 return;
             }
 
+            const nextIndex = allAnswers.length;
+
+            if (questionHistory[nextIndex]) {
+                displayQuestion(questionHistory[nextIndex], nextIndex);
+                return;
+            }
+
             document.getElementById('questionCard').style.display = 'none';
             document.getElementById('loadingDiv').style.display = 'block';
+            document.getElementById('nextBtn').disabled = true;
+            document.getElementById('backBtn').disabled = true;
 
             try {
                 const response = await fetch('/api/get-next-question', {
@@ -260,7 +280,8 @@ ADAPTIVE_QUESTIONS_TEMPLATE = """
                 document.getElementById('questionCard').style.display = 'block';
 
                 if (data.question) {
-                    displayQuestion(data.question);
+                    questionHistory[nextIndex] = data.question;
+                    displayQuestion(data.question, nextIndex);
                 } else {
                     await finishQuestions();
                 }
@@ -274,11 +295,13 @@ ADAPTIVE_QUESTIONS_TEMPLATE = """
 
         function goBack() {
             if (allAnswers.length > 0) {
-                allAnswers.pop();
-                updateProgress();
-                document.getElementById('answerInput').value = '';
-                document.getElementById('charCount').textContent = '0';
-                document.getElementById('nextBtn').disabled = true;
+                const currentIndex = allAnswers.length; 
+                allAnswers.pop(); 
+                
+                const prevIndex = allAnswers.length;
+                if (questionHistory[prevIndex]) {
+                    displayQuestion(questionHistory[prevIndex], prevIndex);
+                }
             }
         }
 

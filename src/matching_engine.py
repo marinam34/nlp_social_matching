@@ -246,9 +246,17 @@ class MatchingEngine:
         
         primary_targets = [query_goal]
         if query_goal == 'legal_support':
-            primary_targets = ['provide_legal_support']
-        elif query_goal == 'provide_legal_support':
+            primary_targets = ['legal_support_volunteers']
+        elif query_goal == 'legal_support_volunteers':
             primary_targets = ['legal_support']
+        elif query_goal == 'mental_support':
+            primary_targets = ['mental_support_volunteers']
+        elif query_goal == 'mental_support_volunteers':
+            primary_targets = ['mental_support']
+        elif query_goal == 'language_support':
+            primary_targets = ['language_support_volunteers']
+        elif query_goal == 'language_support_volunteers':
+            primary_targets = ['language_support']
 
         primary_safe = []
         peer_safe = []

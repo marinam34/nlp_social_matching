@@ -286,10 +286,12 @@ REGISTRATION_TEMPLATE = """
                     <select name="goal" required>
                         <option value="">Select your goal...</option>
                         <option value="social_connection">Social Connection (Meet new people)</option>
-                        <option value="legal_support">Legal Support (Uni, work, visa, etc.)</option>
-                        <option value="provide_legal_support">Provide Legal Support (Help others)</option>
-                        <option value="mental_health">Mental Health Support (Talk to someone)</option>
-                        <option value="language_assistance">Language Assistance (Improve skills)</option>
+                        <option value="legal_support">Legal Support (Need help with Uni, visa, etc.)</option>
+                        <option value="legal_support_volunteers">Legal Support Volunteer (Helper)</option>
+                        <option value="mental_support">Mental Support (Need someone to talk to)</option>
+                        <option value="mental_support_volunteers">Mental Support Volunteer (Helper)</option>
+                        <option value="language_support">Language Support (Need help learning)</option>
+                        <option value="language_support_volunteers">Language Support Volunteer (Helper)</option>
                     </select>
                 </div>
 
@@ -1820,21 +1822,29 @@ MATCHES_TEMPLATE = """
         function showSupportBox(goal) {
             const box = document.getElementById('supportBox');
             const info = {
-                'mental_health': {
+                'mental_support': {
                     title: '💡 Important Information',
-                    text: 'You can always call the anonymous support service at <strong>+1 234 567 89 01</strong>.'
+                    text: 'You can always access free anonymous support services at <strong>+1 234 567 89 01</strong>.'
+                },
+                'mental_support_volunteers': {
+                    title: '🌟 Mental Support Volunteer',
+                    text: 'Thank you for volunteering! Your empathy can help someone feel much more connected and supported.'
                 },
                 'legal_support': {
                     title: '⚖️ Legal Assistance',
-                    text: 'You can ask your questions related to documents to the lawyer on duty at <strong>+2 123 456 78 90</strong> or by email <a href="mailto:lawyer@example.com">lawyer@example.com</a>. You can also find more information on the <a href="http://cityinfo.com" target="_blank">cityinfo.com</a> website.'
+                    text: 'For complex legal cases, you can contact the lawyer on duty at <strong>+2 123 456 78 90</strong> or email <a href="mailto:lawyer@example.com">lawyer@example.com</a>.'
                 },
-                'language_assistance': {
+                'legal_support_volunteers': {
+                    title: '⚖️ Legal Support Volunteer',
+                    text: 'Your expertise in regulations and documentation is invaluable. Thank you for helping newcomers navigate these challenges!'
+                },
+                'language_support': {
                     title: '🗣️ Language Practice',
-                    text: 'Besides matching with partners here, you can also search for local language clubs and tandem meetings in the city to practice your skills!'
+                    text: 'Looking for even more practice? Check out local language cafes and tandem meetings in the city center!'
                 },
-                'provide_legal_support': {
-                    title: '🌟 Peer Mentor Role',
-                    text: 'Thank you for offering your help! You have been matched with people who specifically need legal and administrative guidance. Your experience can make a huge difference in their journey.'
+                'language_support_volunteers': {
+                    title: '🗣️ Language Support Volunteer',
+                    text: 'Thank you for helping others bridge the language gap! Your patience and guidance make the integration process much smoother.'
                 }
             };
 

@@ -29,20 +29,30 @@ class AdaptiveQuestionEngine:
                 {'id': 'Q2', 'question': "Are you looking for general information/advice or do you have a specific active case or dispute?", 'type': 'open_text'},
                 {'id': 'Q3', 'question': "How urgent is your situation, and what specific outcome are you hoping for?", 'type': 'open_text'}
             ],
-            'mental_health': [
+            'legal_support_volunteers': [
+                {'id': 'Q1', 'question': "What specific areas of law or administration can you help with? (e.g., Uni regulations, Job contracts, Visa, Housing)", 'type': 'open_text'},
+                {'id': 'Q2', 'question': "What is your background or experience? (e.g., Law student, professional lawyer, or personal experience with similar cases)", 'type': 'open_text'},
+                {'id': 'Q3', 'question': "What is your availability, and do you prefer one-time consultations or ongoing mentorship?", 'type': 'open_text'}
+            ],
+            'mental_support': [
                 {'id': 'Q1', 'question': "How have you been feeling lately? Are you looking for someone to talk to, or professional resources?", 'type': 'open_text'},
-                {'id': 'Q2', 'question': "What kind of support environment do you prefer? (e.g., One-on-one peer support, group sessions, or finding therapy options)", 'type': 'open_text'},
+                {'id': 'Q2', 'question': "What kind of support environment do you prefer? (e.g., One-on-one peer support, group sessions)", 'type': 'open_text'},
                 {'id': 'Q3', 'question': "Are there specific topics or stressors you want to focus on or avoid in your conversations?", 'type': 'open_text'}
             ],
-            'language_assistance': [
+            'mental_support_volunteers': [
+                {'id': 'Q1', 'question': "Why would you like to provide mental support to others?", 'type': 'open_text'},
+                {'id': 'Q2', 'question': "What is your background or experience in providing support? (e.g., Psychology student, trained listener, or lived experience)", 'type': 'open_text'},
+                {'id': 'Q3', 'question': "How much time per week can you dedicate to supporting others, and what times are you usually available?", 'type': 'open_text'}
+            ],
+            'language_support': [
                 {'id': 'Q1', 'question': "Which language do you want to improve, and what is your current approximate level?", 'type': 'open_text'},
                 {'id': 'Q2', 'question': "What are your main goals? (e.g., passing an exam, daily conversation, professional/business communication)", 'type': 'open_text'},
                 {'id': 'Q3', 'question': "Do you prefer a formal tutoring style or casual conversation exchange with native speakers?", 'type': 'open_text'}
             ],
-            'provide_legal_support': [
-                {'id': 'Q1', 'question': "What specific areas of law or administration can you help with? (e.g., Uni regulations, Job contracts, Visa, Housing)", 'type': 'open_text'},
-                {'id': 'Q2', 'question': "What is your background or experience? (e.g., Law student, professional lawyer, or personal experience with similar cases)", 'type': 'open_text'},
-                {'id': 'Q3', 'question': "What is your availability, and do you prefer one-time consultations or ongoing mentorship?", 'type': 'open_text'}
+            'language_support_volunteers': [
+                {'id': 'Q1', 'question': "Which languages can you help with, and what is your level of proficiency? (e.g., Native speaker, C1/C2)", 'type': 'open_text'},
+                {'id': 'Q2', 'question': "Do you have any previous experience in teaching languages or facilitating language exchanges?", 'type': 'open_text'},
+                {'id': 'Q3', 'question': "What is your preferred method of helping? (e.g., informal chats, structured lessons, or correcting written work)", 'type': 'open_text'}
             ]
         }
 
@@ -85,9 +95,9 @@ These questions MUST:
 4. Help find the best matches or resources for them.
 
 BE SPECIFIC based on their answers. 
-- If their goal is Language Assistance, ask about specific learning methods or obstacles.
+- If their goal is Language Support, ask about specific learning methods or obstacles.
 - If their goal is Legal Support, ask about their specific situation (deadlines, documents, etc).
-- If their goal is Mental Health, ask about their preferred type of interaction or specific stressors mentioned.
+- If their goal is Mental Support, ask about their preferred type of interaction or specific stressors mentioned.
 - If their goal is Social Connection, explore hobby-specific details and social style.
 
 Format EXACTLY like this (no extra text):
@@ -148,29 +158,41 @@ Q7: [question about lifestyle/schedule]
                 {'id': 'Q6', 'question': 'What is your preferred way of receiving help: a one-time consultation or ongoing support?', 'type': 'open_text'},
                 {'id': 'Q7', 'question': 'Are there any specific deadlines we should be aware of for your case?', 'type': 'open_text'}
             ],
-            'mental_health': [
+            'legal_support_volunteers': [
+                {'id': 'Q4', 'question': 'Have you ever represented anyone or provided written legal advice before?', 'type': 'open_text'},
+                {'id': 'Q5', 'question': 'Are you comfortable explaining complex legal terms in simpler language?', 'type': 'open_text'},
+                {'id': 'Q6', 'question': 'What languages are you most comfortable using when discussing legal matters?', 'type': 'open_text'},
+                {'id': 'Q7', 'question': 'Are there any types of cases or situations you would NOT be comfortable helping with?', 'type': 'open_text'}
+            ],
+            'mental_support': [
                 {'id': 'Q4', 'question': 'What specific methods do you usually find helpful for managing stress or difficult emotions?', 'type': 'open_text'},
                 {'id': 'Q5', 'question': 'Are you looking for support from people who have had similar experiences (peer support)?', 'type': 'open_text'},
                 {'id': 'Q6', 'question': 'How much time per week are you willing to dedicate to these supportive conversations?', 'type': 'open_text'},
                 {'id': 'Q7', 'question': 'Are there any particular times of day when you feel you need more support than usual?', 'type': 'open_text'}
             ],
-            'language_assistance': [
+            'mental_support_volunteers': [
+                {'id': 'Q4', 'question': 'What specific areas of mental well-being do you feel most comfortable discussing or supporting?', 'type': 'open_text'},
+                {'id': 'Q5', 'question': 'Have you ever participated in peer-support groups or volunteer initiatives before?', 'type': 'open_text'},
+                {'id': 'Q6', 'question': 'Are there any topics or situations you would find challenging to handle in a support conversation?', 'type': 'open_text'},
+                {'id': 'Q7', 'question': 'What qualities do you think are most important for someone in a support role?', 'type': 'open_text'}
+            ],
+            'language_support': [
                 {'id': 'Q4', 'question': 'What is your mother tongue, and do you have experience learning other languages?', 'type': 'open_text'},
                 {'id': 'Q5', 'question': 'Do you prefer practicing in a group or one-on-one with a language partner?', 'type': 'open_text'},
                 {'id': 'Q6', 'question': 'What is the most difficult part of language learning for you (e.g., grammar, speaking, listening)?', 'type': 'open_text'},
                 {'id': 'Q7', 'question': 'How many hours a week can you realistically spend on language exchange or practice?', 'type': 'open_text'}
+            ],
+            'language_support_volunteers': [
+                {'id': 'Q4', 'question': 'Are you comfortable explaining grammar rules or do you prefer focusing on casual conversation?', 'type': 'open_text'},
+                {'id': 'Q5', 'question': 'What is your preferred method for conducting language sessions (e.g., video calls, in-person meeting, text)?', 'type': 'open_text'},
+                {'id': 'Q6', 'question': 'How do you usually approach correcting someone\'s language mistakes?', 'type': 'open_text'},
+                {'id': 'Q7', 'question': 'What cultural aspects of the languages you speak would you enjoy sharing with someone?', 'type': 'open_text'}
             ],
             'social_connection': [
                 {'id': 'Q4', 'question': 'What specific activities or hobbies would you like to do with new friends?', 'type': 'open_text'},
                 {'id': 'Q5', 'question': 'Do you prefer one-on-one conversations, small groups of 3-5, or larger social gatherings?', 'type': 'open_text'},
                 {'id': 'Q6', 'question': 'How often do you like to meet up with friends?', 'type': 'open_text'},
                 {'id': 'Q7', 'question': 'What is your preferred social environment (loud/city/active or quiet/nature/relaxed)?', 'type': 'open_text'}
-            ],
-            'provide_legal_support': [
-                {'id': 'Q4', 'question': 'Have you ever represented anyone or provided written legal advice before?', 'type': 'open_text'},
-                {'id': 'Q5', 'question': 'Are you comfortable explaining complex legal terms in simpler language?', 'type': 'open_text'},
-                {'id': 'Q6', 'question': 'What languages are you most comfortable using when discussing legal matters?', 'type': 'open_text'},
-                {'id': 'Q7', 'question': 'Are there any types of cases or situations you would NOT be comfortable helping with?', 'type': 'open_text'}
             ]
         }
         return fallbacks.get(goal, fallbacks['social_connection'])
